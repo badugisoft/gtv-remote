@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var statusItem: NSStatusItem?
     var window: NSWindow?
     let viewModel = RemoteViewModel()
+    private var keyboardMonitor: KeyboardMonitor?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setbuf(stdout, nil)
@@ -20,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
         setupStatusItem()
         setupMainWindow()
+        self.keyboardMonitor = KeyboardMonitor(viewModel: viewModel)
     }
 
     private func setupMainWindow() {

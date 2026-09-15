@@ -16,10 +16,10 @@ public final class KeyboardMonitor {
         guard localMonitor == nil else { return }
         
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .keyUp]) { [weak self] event in
-            guard let self = self, let viewModel = self.viewModel else { return event }
+            guard let self = self, let viewModel = self.viewModel, let keyWin = NSApp.keyWindow else { return event }
             
-            // If any modal sheet (Device list or Pairing pin) is active, do NOT intercept any keys!
-            if viewModel.showDeviceList || viewModel.isPairingSheetPresented {
+            // If any modal sheet (Device list, Pairing PIN, Shortcuts, Settings) is active, do NOT intercept keys!
+            if keyWin.attachedSheet != nil || NSApp.modalWindow != nil || viewModel.showDeviceList || viewModel.isPairingSheetPresented {
                 return event
             }
             
@@ -53,16 +53,27 @@ public final class KeyboardMonitor {
                 }
             }
             
-            // Handle Cmd+V for clipboard send
-            if event.type == .keyDown && event.modifierFlags.contains(.command) && event.charactersIgnoringModifiers == "v" {
-                viewModel.sendClipboardText()
-                return nil
-            }
+            // If Command modifier is active:
+            if event.modifierFlags.contains(.command) {
+                // Handle Cmd+V for clipboard send (keyCode 9 is 'V')
+                if event.type == .keyDown && (event.keyCode == 9 || event.charactersIgnoringModifiers?.lowercased() == "v") {
+                    viewModel.sendClipboardText()
+                    return nil
+                }
 
-            // Handle Cmd+W to hide window without terminating
-            if event.type == .keyDown && event.modifierFlags.contains(.command) && event.charactersIgnoringModifiers == "w" {
-                NSApp.keyWindow?.orderOut(nil)
-                return nil
+                // Handle Cmd+W to hide window without terminating (keyCode 13 is 'W')
+                if event.type == .keyDown && (event.keyCode == 13 || event.charactersIgnoringModifiers?.lowercased() == "w") {
+                    NSApp.keyWindow?.orderOut(nil)
+                    return nil
+                }
+                
+                // Let other Command combinations pass through (Cmd+Q, Cmd+H, etc.)
+                return event
+            }
+            
+            // If Control or Option modifier is active, pass through
+            if event.modifierFlags.contains(.control) || event.modifierFlags.contains(.option) {
+                return event
             }
             
             let remoteKey: RemoteKey?
@@ -73,12 +84,12 @@ public final class KeyboardMonitor {
             case 124: remoteKey = .dpadRight
             case 36, 76: remoteKey = .dpadCenter
             case 53, 51: remoteKey = .back
-            case 4:   remoteKey = !event.modifierFlags.contains(.command) ? .home : nil
+            case 4:   remoteKey = .home
             case 49:  remoteKey = .playPause
             case 24, 69: remoteKey = .volumeUp
             case 27, 78: remoteKey = .volumeDown
-            case 46:  remoteKey = !event.modifierFlags.contains(.command) ? .volumeMute : nil
-            case 35:  remoteKey = !event.modifierFlags.contains(.command) ? .power : nil
+            case 46:  remoteKey = .volumeMute
+            case 35:  remoteKey = .power
             default:  remoteKey = nil
             }
             
