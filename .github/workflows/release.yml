@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build & Release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build and Package App
+        run: |
+          make package
+
+      - name: Prepare Release Artifacts
+        run: |
+          TAG="${{ github.ref_name }}"
+          cp "dist/GTV Remote.dmg" "dist/GTV-Remote-${TAG}.dmg"
+          cp "dist/GTV Remote.zip" "dist/GTV-Remote-${TAG}.zip"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "GTV Remote ${{ github.ref_name }}"
+          files: |
+            dist/GTV-Remote-${{ github.ref_name }}.dmg
+            dist/GTV-Remote-${{ github.ref_name }}.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

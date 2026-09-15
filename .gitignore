@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Swift Package Manager & Build
+.build/
+Packages/
+Package.pins
+Package.resolved.bak
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+!*.xcodeproj/project.pbxproj
+!*.xcworkspace/contents.xcworkspacedata
+xcuserdata/
+DerivedData/
+*.hmap
+*.xccheckout
+
+# SwiftPM
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+
+# Build Artifacts & Distribution
+*.app
+*.dmg
+*.zip
+dist/
+
+# Editor & IDE
+.vscode/
+.history/
+.idea/
+*.swp
+*~
+
+# Credentials & Temp
+.netrc
+.env
+*.pem
+*.key

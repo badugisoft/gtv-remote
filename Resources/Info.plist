@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>GTV Remote</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.badugisoft.gtvremote</string>
+    <key>CFBundleName</key>
+    <string>GTV Remote</string>
+    <key>CFBundleDisplayName</key>
+    <string>GTV Remote</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Google TV 검색 및 리모컨 제어를 위해 로컬 네트워크 접근 권한이 필요합니다.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_androidtvremote2._tcp</string>
+    </array>
+</dict>
+</plist>
