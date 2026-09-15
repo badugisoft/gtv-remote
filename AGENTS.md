@@ -13,6 +13,10 @@ When assisting in this repository, always follow these fundamental rules:
 3. **Clarify Critical Decisions**: Ask the user before making substantial architectural changes or removing existing functionality.
 4. **Concise & Direct Responses**: Answer only what was asked without unnecessary preamble, fluff, or excessive hypothetical examples.
 5. **No Flattery**: Keep responses objective, technical, and professional without patronizing praise.
+6. **Versioning Policy**:
+   - **Major (X.0.0)**: Use only for major architectural redesigns or breaking changes.
+   - **Minor (0.X.0)**: Use when adding new features or making substantial feature modifications.
+   - **Patch / Revision (0.0.X)**: Use for bug fixes, corrections, and minor maintenance.
 
 ---
 
