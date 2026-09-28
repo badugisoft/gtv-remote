@@ -91,7 +91,7 @@ public final class RemoteViewModel: ObservableObject {
         guard let lastHost = UserDefaults.standard.string(forKey: "gtv_last_host"),
               !lastHost.isEmpty else { return }
         let lastName = UserDefaults.standard.string(forKey: "gtv_last_name") ?? lastHost
-        let device = DiscoveredDevice(name: lastName, host: lastHost, port: 6466, endpoint: nil)
+        let device = DiscoveredDevice(id: lastName, name: lastName, host: lastHost, port: 6466, endpoint: nil)
         print("[RemoteViewModel] Auto-reconnecting to saved device: \(lastName) (\(lastHost))")
         selectedDevice = device
         connectionManager.connect(to: device)
@@ -106,9 +106,20 @@ public final class RemoteViewModel: ObservableObject {
         connectionManager.connect(to: device)
     }
     
+    public func disconnect() {
+        selectedDevice = nil
+        connectionManager.disconnect()
+    }
+    
     public func resetPairing() {
         selectedDevice = nil
         connectionManager.resetAllPairing()
+    }
+
+    public func cancelPairing() {
+        isPairingSheetPresented = false
+        pairingPinCode = ""
+        connectionManager.disconnect()
     }
     
     public func submitPinCode() {

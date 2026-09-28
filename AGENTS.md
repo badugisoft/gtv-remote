@@ -17,6 +17,7 @@ When assisting in this repository, always follow these fundamental rules:
    - **Major (X.0.0)**: Use only for major architectural redesigns or breaking changes.
    - **Minor (0.X.0)**: Use when adding new features or making substantial feature modifications.
    - **Patch / Revision (0.0.X)**: Use for bug fixes, corrections, and minor maintenance.
+7. **Install & Run Upon Completion**: Whenever local modifications and builds are completed, always install and launch the app (`make install`) so the user can immediately test the changes.
 
 ---
 

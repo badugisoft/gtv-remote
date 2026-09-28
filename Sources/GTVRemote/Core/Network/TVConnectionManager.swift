@@ -30,6 +30,16 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
     
     // MARK: - Connect & Pairing Flow
     
+    public func isPaired(device: DiscoveredDevice) -> Bool {
+        let lastHost = UserDefaults.standard.string(forKey: "gtv_last_host") ?? ""
+        let isLastConnected = (!lastHost.isEmpty && (device.host == lastHost || device.id == lastHost || device.name == lastHost))
+
+        return UserDefaults.standard.bool(forKey: "gtv_paired_\(device.host)")
+            || UserDefaults.standard.bool(forKey: "gtv_paired_\(device.id)")
+            || UserDefaults.standard.bool(forKey: "gtv_paired_\(device.name)")
+            || isLastConnected
+    }
+
     public func connect(to device: DiscoveredDevice) {
         self.currentDevice = device
         
@@ -53,10 +63,20 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
                 var updatedDevice = device
                 updatedDevice.host = targetHost
                 self.currentDevice = updatedDevice
-                self.startRemoteConnection(device: updatedDevice)
+                self.routeConnection(for: updatedDevice)
             }
         } else {
+            routeConnection(for: device)
+        }
+    }
+
+    private func routeConnection(for device: DiscoveredDevice) {
+        if isPaired(device: device) {
+            print("[Connection] Device \(device.name) (\(device.host)) is paired. Connecting to remote control (6466)...")
             startRemoteConnection(device: device)
+        } else {
+            print("[Connection] Device \(device.name) (\(device.host)) is NOT paired. Initiating pairing flow on 6467...")
+            startPairing(device: device)
         }
     }
     
@@ -83,6 +103,8 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         remoteBridge?.disconnect()
         remoteBridge = nil
         pairingBridge?.disconnect()
+        pairingBridge = nil
+        serverCertData = nil
         
         let bridge = TLSSocketBridge()
         self.pairingBridge = bridge
@@ -137,33 +159,34 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         if remoteBridge != nil, let dev = currentDevice {
             remoteBridge = nil
 
-            // If TV rejected certificate -> Clear pairing flag and re-pair
-            let isCertRejected = error.map { "\($0)".contains("CERTIFICATE_UNKNOWN") } ?? false
-            if isCertRejected {
-                print("[TLS] TV rejected our certificate. Clearing paired flag and re-pairing...")
-                UserDefaults.standard.removeObject(forKey: "gtv_paired_\(dev.host)")
-                UserDefaults.standard.removeObject(forKey: "gtv_paired_\(dev.id)")
-                DispatchQueue.main.async { self.startPairing(device: dev) }
-                return
-            }
-
-            let lastHost = UserDefaults.standard.string(forKey: "gtv_last_host") ?? ""
-            let isPaired = UserDefaults.standard.bool(forKey: "gtv_paired_\(dev.host)")
-                || UserDefaults.standard.bool(forKey: "gtv_paired_\(dev.id)")
-                || UserDefaults.standard.bool(forKey: "gtv_paired_\(lastHost)")
-                || CertificateManager.shared.hasExistingCertificates
-
-            if isPaired {
-                // For paired device or existing certificates, retry connection on session end
-                print("[TLS] Paired device disconnected. Retrying remote connection in 1.5s...")
+            if isPaired(device: dev) {
+                // Device is paired: transient disconnect or lingering socket from previous process.
+                // Never wipe pairing flags! Automatically retry remote connection after a brief delay.
+                print("[TLS] Paired device remote socket disconnected. Reconnecting to 6466 in 1.5s...")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-                    guard let self, self.remoteBridge == nil else { return }
-                    self.startRemoteConnection(device: dev)
+                    guard let self, self.remoteBridge == nil, let current = self.currentDevice, self.isPaired(device: current) else { return }
+                    self.startRemoteConnection(device: current)
                 }
             } else {
-                // For unpaired new device, fallback to pairing port (6467)
-                print("[TLS] New un-paired device. Falling back to pairing on 6467...")
-                startPairing(device: dev)
+                // Unpaired device: fall back to pairing flow on port 6467
+                print("[TLS] Unpaired device connection rejected. Starting pairing on 6467...")
+                DispatchQueue.main.async {
+                    self.startPairing(device: dev)
+                }
+            }
+            return
+        }
+
+        // If pairing port (6467) disconnected
+        if pairingBridge != nil {
+            pairingBridge = nil
+            print("[Pairing] Pairing socket disconnected.")
+            DispatchQueue.main.async {
+                if case .pairing = self.state {
+                    self.state = .failed("Pairing session disconnected by TV")
+                } else if case .connecting = self.state {
+                    self.state = .failed("Could not connect to TV pairing port (6467)")
+                }
             }
             return
         }
@@ -268,6 +291,9 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
                 print("[Pairing] SecretAck received! Pairing Successful!")
                 if let dev = currentDevice {
                     UserDefaults.standard.set(true, forKey: "gtv_paired_\(dev.host)")
+                    UserDefaults.standard.set(true, forKey: "gtv_paired_\(dev.id)")
+                    UserDefaults.standard.set(dev.host, forKey: "gtv_last_host")
+                    UserDefaults.standard.set(dev.name, forKey: "gtv_last_name")
                 }
                 pairingBridge?.disconnect()
                 pairingBridge = nil
@@ -410,6 +436,9 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
                 if let dev = self.currentDevice {
                     UserDefaults.standard.set(dev.host, forKey: "gtv_last_host")
                     UserDefaults.standard.set(dev.name, forKey: "gtv_last_name")
+                    UserDefaults.standard.set(true, forKey: "gtv_paired_\(dev.host)")
+                    UserDefaults.standard.set(true, forKey: "gtv_paired_\(dev.id)")
+                    UserDefaults.standard.set(true, forKey: "gtv_paired_\(dev.name)")
                 }
                 DispatchQueue.main.async {
                     self.state = .connected(deviceName: self.currentDevice?.name ?? "Google TV")

@@ -38,7 +38,7 @@ install: build
 	@echo "⏹️  기존 실행 중인 앱 종료..."
 	@pkill -f "GTV Remote" 2>/dev/null || true
 	@pkill -f "GTVRemote" 2>/dev/null || true
-	@sleep 0.3
+	@sleep 0.8
 
 	@echo "📦 앱 번들 생성 중..."
 	@rm -rf "/Applications/GTVRemote.app" 2>/dev/null || true

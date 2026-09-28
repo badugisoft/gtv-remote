@@ -299,7 +299,13 @@ public final class CertificateManager: @unchecked Sendable {
         let expLen = readLen()
         let expBytes = Array(b[p..<p+expLen])
 
-        let modHex = modBytes.map { String(format: "%02X", $0) }.joined()
+        // Strip leading 0x00 sign byte from DER INTEGER if present (RSA modulus is positive)
+        var rawMod = modBytes
+        while rawMod.count > 1 && rawMod.first == 0x00 {
+            rawMod.removeFirst()
+        }
+
+        let modHex = rawMod.map { String(format: "%02X", $0) }.joined()
         let expHex = expBytes.map { String(format: "%02X", $0) }.joined()
 
         return (modHex, expHex)

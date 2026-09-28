@@ -104,6 +104,7 @@ public struct RemoteControlView: View {
                 .padding(.vertical, 8)
                 .contentShape(Rectangle())
             }
+            .frame(maxWidth: .infinity)
             .buttonStyle(HeaderDeviceButtonStyle())
             .focusable(false)
             .help(L10n.selectDeviceTooltip)
@@ -123,10 +124,9 @@ public struct RemoteControlView: View {
             } label: {
                 Image(systemName: "globe")
                     .font(.system(size: 13))
-                    .frame(width: 30, height: 30)
             }
             .menuStyle(BorderlessButtonMenuStyle())
-            .buttonStyle(HeaderIconButtonStyle())
+            .fixedSize()
             .help(L10n.languageTooltip)
 
             // Keyboard shortcuts reference button
@@ -490,7 +490,7 @@ struct DeviceListSheet: View {
                 Spacer()
 
                 Button(action: {
-                    viewModel.resetPairing()
+                    viewModel.disconnect()
                     dismiss()
                 }) {
                     Text(L10n.disconnect)

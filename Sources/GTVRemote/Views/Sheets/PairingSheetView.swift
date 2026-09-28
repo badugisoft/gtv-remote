@@ -40,7 +40,7 @@ public struct PairingSheetView: View {
             
             HStack(spacing: 12) {
                 Button(L10n.cancel) {
-                    viewModel.isPairingSheetPresented = false
+                    viewModel.cancelPairing()
                 }
                 
                 Button(L10n.pair) {
