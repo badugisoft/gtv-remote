@@ -292,12 +292,18 @@ public final class CertificateManager: @unchecked Sendable {
         // modulus INTEGER
         guard expect(0x02) else { return nil }
         let modLen = readLen()
-        let modBytes = Array(b[p..<p+modLen]); p += modLen
+        var modBytes = Array(b[p..<p+modLen]); p += modLen
+        while modBytes.count > 1 && modBytes[0] == 0x00 {
+            modBytes.removeFirst()
+        }
 
         // exponent INTEGER
         guard expect(0x02) else { return nil }
         let expLen = readLen()
-        let expBytes = Array(b[p..<p+expLen])
+        var expBytes = Array(b[p..<p+expLen])
+        while expBytes.count > 1 && expBytes[0] == 0x00 {
+            expBytes.removeFirst()
+        }
 
         // Strip leading 0x00 sign byte from DER INTEGER if present (RSA modulus is positive)
         var rawMod = modBytes

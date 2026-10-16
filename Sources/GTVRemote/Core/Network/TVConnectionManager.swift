@@ -158,7 +158,6 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         // If remote control port (6466) disconnected
         if remoteBridge != nil, let dev = currentDevice {
             remoteBridge = nil
-
             if isPaired(device: dev) {
                 // Device is paired: transient disconnect or lingering socket from previous process.
                 // Never wipe pairing flags! Automatically retry remote connection after a brief delay.
@@ -337,14 +336,27 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         let serverExpHex = serverModExp.exponentHex
         let pinTailHex = String(codeClean.suffix(4)) // codeClean[2:]
         
-        guard let clientModBytes = hexStringToData(clientModHex),
-              let clientExpBytes = hexStringToData(clientExpHex),
-              let serverModBytes = hexStringToData(serverModHex),
-              let serverExpBytes = hexStringToData(serverExpHex),
+        guard let rawClientMod = hexStringToData(clientModHex),
+              let rawClientExp = hexStringToData(clientExpHex),
+              let rawServerMod = hexStringToData(serverModHex),
+              let rawServerExp = hexStringToData(serverExpHex),
               let pinTailBytes = hexStringToData(pinTailHex) else {
             print("[Pairing] Failed to convert hex components to bytes")
             return
         }
+        
+        func stripLeadingZeros(_ data: Data) -> Data {
+            var d = data
+            while d.count > 1 && d[d.startIndex] == 0x00 {
+                d = d.dropFirst()
+            }
+            return d
+        }
+        
+        let clientModBytes = stripLeadingZeros(rawClientMod)
+        let clientExpBytes = stripLeadingZeros(rawClientExp)
+        let serverModBytes = stripLeadingZeros(rawServerMod)
+        let serverExpBytes = stripLeadingZeros(rawServerExp)
         
         var hasher = SHA256()
         hasher.update(data: clientModBytes)
@@ -362,7 +374,7 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         }
         
         if digestData[0] != expectedHead {
-            print("[Pairing] WARNING: Digest prefix (0x\(String(format: "%02X", digestData[0]))) does not match PIN prefix (0x\(pinHeadHex))")
+            print("[Pairing] WARNING: Digest prefix (0x\(String(format: "%02X", digestData[0]))) does not match PIN prefix (0x\(pinHeadHex)). Verification failed.")
         } else {
             print("[Pairing] PIN hash verified! Prefix match: 0x\(pinHeadHex)")
         }

@@ -94,6 +94,8 @@ public struct RemoteControlView: View {
                         Text(statusSubtitle)
                             .font(.system(size: 11))
                             .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                     }
                     Spacer()
                     Image(systemName: "chevron.up.chevron.down")
@@ -167,7 +169,11 @@ public struct RemoteControlView: View {
     private var statusSubtitle: String {
         switch viewModel.connectionState {
         case .connected:        return viewModel.selectedDevice?.host ?? L10n.online
-        case .error(let msg):   return msg
+        case .error(let msg):
+            if msg.contains("badSecret") || msg.contains("402") {
+                return L10n.pairingFailed
+            }
+            return msg
         default:                return viewModel.selectedDevice?.host ?? L10n.selectTVPrompt
         }
     }
