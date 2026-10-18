@@ -23,6 +23,8 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
     private var serverCertData: Data?
     private var clientCertData: Data?
     private var currentDevice: DiscoveredDevice?
+    private var remoteReconnectAttempts = 0
+    private let maxReconnectAttempts = 3
     
     private init() {
         CertificateManager.shared.ensureCertificatesExist()
@@ -42,6 +44,7 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
 
     public func connect(to device: DiscoveredDevice) {
         self.currentDevice = device
+        self.remoteReconnectAttempts = 0
         
         DispatchQueue.main.async {
             self.state = .connecting
@@ -59,6 +62,16 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
                     }
                     return
                 }
+                
+                let previousHost = UserDefaults.standard.string(forKey: "gtv_last_host")
+                if let prev = previousHost, !prev.isEmpty, prev != targetHost {
+                    print("[Connection] Detected IP change: \(prev) -> \(targetHost). Updating cached host.")
+                    UserDefaults.standard.set(targetHost, forKey: "gtv_last_host")
+                    if UserDefaults.standard.bool(forKey: "gtv_paired_\(device.name)") {
+                        UserDefaults.standard.set(true, forKey: "gtv_paired_\(targetHost)")
+                    }
+                }
+                
                 print("[Connection] Resolved host: \(targetHost)")
                 var updatedDevice = device
                 updatedDevice.host = targetHost
@@ -158,13 +171,36 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
         // If remote control port (6466) disconnected
         if remoteBridge != nil, let dev = currentDevice {
             remoteBridge = nil
+            
+            let errString = String(describing: error)
+            let isCertUnknown = errString.contains("CERTIFICATE_UNKNOWN") || errString.contains("certificate unknown")
+            
+            if isCertUnknown {
+                print("[TLS] TV rejected client certificate (CERTIFICATE_UNKNOWN). Invalidating pairing and falling back to pairing flow on 6467...")
+                UserDefaults.standard.removeObject(forKey: "gtv_paired_\(dev.host)")
+                UserDefaults.standard.removeObject(forKey: "gtv_paired_\(dev.id)")
+                UserDefaults.standard.removeObject(forKey: "gtv_paired_\(dev.name)")
+                remoteReconnectAttempts = 0
+                DispatchQueue.main.async {
+                    self.startPairing(device: dev)
+                }
+                return
+            }
+            
             if isPaired(device: dev) {
-                // Device is paired: transient disconnect or lingering socket from previous process.
-                // Never wipe pairing flags! Automatically retry remote connection after a brief delay.
-                print("[TLS] Paired device remote socket disconnected. Reconnecting to 6466 in 1.5s...")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-                    guard let self, self.remoteBridge == nil, let current = self.currentDevice, self.isPaired(device: current) else { return }
-                    self.startRemoteConnection(device: current)
+                if remoteReconnectAttempts < maxReconnectAttempts {
+                    remoteReconnectAttempts += 1
+                    print("[TLS] Paired device remote socket disconnected. Reconnecting to 6466 in 1.5s (attempt \(remoteReconnectAttempts)/\(maxReconnectAttempts))...")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+                        guard let self, self.remoteBridge == nil, let current = self.currentDevice, self.isPaired(device: current) else { return }
+                        self.startRemoteConnection(device: current)
+                    }
+                } else {
+                    print("[TLS] Max reconnect attempts (\(maxReconnectAttempts)) reached for \(dev.name) (\(dev.host)).")
+                    remoteReconnectAttempts = 0
+                    DispatchQueue.main.async {
+                        self.state = .failed("Connection lost. Please tap to reconnect or re-pair.")
+                    }
                 }
             } else {
                 // Unpaired device: fall back to pairing flow on port 6467
@@ -445,6 +481,7 @@ public final class TVConnectionManager: ObservableObject, @unchecked Sendable, T
                 sendPacket(reply, via: remoteBridge)
             } else if msg.hasRemoteStart {
                 print("[Remote Protocol] TV Remote Session Started: started=\(msg.remoteStart.started)")
+                self.remoteReconnectAttempts = 0
                 if let dev = self.currentDevice {
                     UserDefaults.standard.set(dev.host, forKey: "gtv_last_host")
                     UserDefaults.standard.set(dev.name, forKey: "gtv_last_name")

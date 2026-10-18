@@ -38,13 +38,22 @@ public final class RemoteViewModel: ObservableObject {
             .sink { [weak self] devices in
                 guard let self = self else { return }
                 self.discoveredDevices = devices
-                // Only auto-connect if device matches saved last host
-                if self.selectedDevice == nil,
-                   let lastHost = UserDefaults.standard.string(forKey: "gtv_last_host"),
-                   let savedDevice = devices.first(where: { $0.host == lastHost || $0.name == lastHost }) {
-                    self.selectedDevice = savedDevice
-                    print("[RemoteViewModel] Re-connecting to previously paired device: \(savedDevice.name) (\(savedDevice.host))...")
-                    self.connect(to: savedDevice)
+                
+                let lastHost = UserDefaults.standard.string(forKey: "gtv_last_host") ?? ""
+                let lastName = UserDefaults.standard.string(forKey: "gtv_last_name") ?? ""
+                
+                // Match discovered device against last paired name or host
+                if let matchedDevice = devices.first(where: {
+                    (!lastName.isEmpty && ($0.name == lastName || $0.id == lastName)) ||
+                    (!lastHost.isEmpty && ($0.host == lastHost || $0.id == lastHost))
+                }) {
+                    if case .connected = self.connectionState {
+                        // Already successfully connected
+                    } else if self.selectedDevice == nil || self.selectedDevice?.endpoint == nil || self.selectedDevice?.id == matchedDevice.id {
+                        print("[RemoteViewModel] Discovered matched device '\(matchedDevice.name)'. Connecting via live endpoint...")
+                        self.selectedDevice = matchedDevice
+                        self.connect(to: matchedDevice)
+                    }
                 }
             }
             .store(in: &cancellables)

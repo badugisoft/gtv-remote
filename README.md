@@ -45,6 +45,8 @@
 
 - **Zero-Config Network Discovery & Instant Reconnect**:
   - Automatic zero-configuration Bonjour / mDNS discovery of all Google TV and Android TV devices on your local network (`_androidtvremote2._tcp`).
+  - Real-time IP address change tracking and auto-sync when TV IP is reassigned via DHCP.
+  - Reconnection retry safety limit preventing infinite connecting state loops.
   - Unicode and international device name resolution.
   - Automatically remembers the last connected TV and re-establishes connection instantly upon launch.
 

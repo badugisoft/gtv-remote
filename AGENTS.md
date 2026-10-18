@@ -27,7 +27,7 @@ When assisting in this repository, always follow these fundamental rules:
 
 - **Language / Platform**: Swift 5.10+, macOS 14.0+ (Sonoma)
 - **UI Framework**: SwiftUI + AppKit integration (menu bar status item, floating HUD window)
-- **Networking**: Apple Network.framework, `dnssd` (Bonjour mDNS discovery for `_androidtvremote2._tcp.local.`), SwiftNIO / NIOSSL (TLS socket bridge on ports 6466 & 6467)
+- **Networking**: Apple Network.framework, `dnssd` / `NetService` (Bonjour mDNS discovery for `_androidtvremote2._tcp.local.` with dynamic IP tracking and safe reconnection bounds), SwiftNIO / NIOSSL (TLS socket bridge on ports 6466 & 6467)
 - **Protocols**: Protocol Buffers via `SwiftProtobufPlugin` (`pairing.proto` and `remote.proto`). Pairing secret computation requires stripping leading null bytes from RSA modulus and exponent per Polo specification.
 - **Security**: Self-signed RSA-2048 client certificate generation using Security framework
 

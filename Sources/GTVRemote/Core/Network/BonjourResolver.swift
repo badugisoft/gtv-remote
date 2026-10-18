@@ -49,10 +49,11 @@ public final class BonjourResolver: NSObject, NetServiceDelegate, @unchecked Sen
         let service = NetService(domain: cleanDomain, type: cleanType, name: name)
         self.netService = service
         service.delegate = self
-        service.resolve(withTimeout: 4.0)
+        service.schedule(in: RunLoop.main, forMode: .common)
+        service.resolve(withTimeout: 3.5)
         
         // Timeout safeguard
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [weak self] in
             self?.finish(with: nil)
         }
     }
@@ -97,6 +98,7 @@ public final class BonjourResolver: NSObject, NetServiceDelegate, @unchecked Sen
         isDone = true
         
         netService?.stop()
+        netService?.remove(from: RunLoop.main, forMode: .common)
         netService?.delegate = nil
         netService = nil
         
