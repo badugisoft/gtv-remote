@@ -26,12 +26,14 @@
 
 ---
 
-## Screenshot
+## Screenshots
 
 <p align="center">
-  <img src="assets/remote_main.png" alt="GTV Remote Main Window" width="300" />
+  <img src="assets/remote_main.png" alt="GTV Remote Main Window" height="460" />
+  <img src="assets/quick_apps_settings.png" alt="Quick Apps Settings" height="460" />
+  <img src="assets/keyboard_shortcuts.png" alt="Keyboard Shortcuts" height="460" />
   <br>
-  <em>GTV Remote: Native macOS Frosted Glass UI</em>
+  <em>GTV Remote: Native macOS Frosted Glass UI, Quick Apps Manager & Keyboard Shortcuts</em>
 </p>
 
 ---
@@ -181,6 +183,8 @@ gtv-remote/
 │           └── RemoteControlView.swift
 └── assets/                           # Screenshots and documentation media
     ├── app_icon.png
+    ├── keyboard_shortcuts.png
+    ├── quick_apps_settings.png
     └── remote_main.png
 ```
 
