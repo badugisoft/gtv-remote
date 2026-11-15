@@ -17,6 +17,16 @@
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
 
+<p align="center">
+  <strong>English</strong> ·
+  <a href="docs/README.ko.md">한국어</a> ·
+  <a href="docs/README.zh-Hans.md">简体中文</a> ·
+  <a href="docs/README.ja.md">日本語</a> ·
+  <a href="docs/README.de.md">Deutsch</a> ·
+  <a href="docs/README.fr.md">Français</a> ·
+  <a href="docs/README.es.md">Español</a>
+</p>
+
 ---
 
 > [!NOTE]
@@ -101,13 +111,40 @@ When the remote window is active, the following physical hotkeys are available:
 
 ---
 
-## Installation & Build
+## Installation
 
-### Prerequisites
+### Option 1: Download Pre-built Release (Recommended)
+
+1. Download the latest `GTV-Remote-v*.dmg` or `GTV-Remote-v*.zip` from [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest).
+2. Open the `.dmg` (or extract the `.zip`) and drag **GTV Remote.app** into your `/Applications` folder.
+3. Launch **GTV Remote** from `/Applications`.
+
+#### Fixing macOS Unverified Developer / Certificate Warning (Gatekeeper)
+
+Because **GTV Remote** is signed ad-hoc without a paid Apple Developer ID certificate, macOS may display a warning on first launch (*"Apple could not verify 'GTV Remote.app' is free of malware"* or *"cannot be opened because the developer cannot be verified"*).
+
+**Method A — via System Settings (GUI):**
+
+1. Try to open **GTV Remote.app** once, then click **Done** (or **Cancel**) on the warning prompt.
+2. Open **System Settings** → **Privacy & Security**.
+3. Scroll down to the **Security** section and click **Open Anyway** next to the message stating `"GTV Remote.app" was blocked`.
+4. Confirm by clicking **Open Anyway** (or **Open**) in the dialog and authenticate with your Mac password or Touch ID.
+
+**Method B — via Terminal:**
+
+```bash
+xattr -cr "/Applications/GTV Remote.app"
+```
+
+---
+
+### Option 2: Build from Source (via Makefile)
+
+#### Prerequisites
 - macOS 14.0 (Sonoma) or later
 - Xcode 16+ or Swift 6.0+ Command Line Tools
 
-### Build and Install via Makefile
+#### Build and Install
 
 Clone the repository and run:
 
@@ -181,11 +218,18 @@ gtv-remote/
 │           │   ├── PairingSheetView.swift
 │           │   └── ShortcutsView.swift
 │           └── RemoteControlView.swift
-└── assets/                           # Screenshots and documentation media
-    ├── app_icon.png
-    ├── keyboard_shortcuts.png
-    ├── quick_apps_settings.png
-    └── remote_main.png
+├── assets/                           # Screenshots and documentation media
+│   ├── app_icon.png
+│   ├── keyboard_shortcuts.png
+│   ├── quick_apps_settings.png
+│   └── remote_main.png
+└── docs/                             # Localized documentation
+    ├── README.de.md                  # Deutsch
+    ├── README.es.md                  # Español
+    ├── README.fr.md                  # Français
+    ├── README.ja.md                  # 日本語
+    ├── README.ko.md                  # 한국어
+    └── README.zh-Hans.md             # 简体中文
 ```
 
 ---
