@@ -37,12 +37,19 @@ When assisting in this repository, always follow these fundamental rules:
 
 ```
 gtv-remote/
-├── .github/workflows/        # CI/CD workflows (release.yml)
+├── .github/
+│   ├── ISSUE_TEMPLATE/       # Bug report, feature request & config templates
+│   ├── PULL_REQUEST_TEMPLATE.md # PR verification checklist
+│   └── workflows/            # CI/CD workflows (release.yml, pages.yml)
+├── CONTRIBUTING.md           # Contribution & build guide
 ├── Makefile                  # Build, install, packaging automation
 ├── Package.swift             # Swift Package Manager manifest
+├── SECURITY.md               # Privacy architecture & vulnerability reporting
 ├── protos/                   # Original Protobuf specifications
 ├── Resources/                # AppIcon.icns, Info.plist
 ├── assets/                   # README images and documentation media
+├── docs/                     # Localized README guides (ko, zh-Hans, ja, de, fr, es)
+├── site/                     # GitHub Pages promotional website (index.html, styles.css, i18n.js)
 └── Sources/GTVRemote/
     ├── App/                  # App delegate, window controller, status item, key monitor
     │   ├── AppDelegate.swift

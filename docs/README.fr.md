@@ -10,6 +10,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><img src="https://img.shields.io/github/v/release/badugisoft/gtv-remote?style=flat-square" alt="Latest Release" /></a>
+  <a href="https://github.com/badugisoft/gtv-remote/releases"><img src="https://img.shields.io/github/downloads/badugisoft/gtv-remote/total?style=flat-square" alt="Total Downloads" /></a>
+  <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
@@ -25,6 +28,17 @@
   <a href="README.de.md">Deutsch</a> ·
   <strong>Français</strong> ·
   <a href="README.es.md">Español</a>
+</p>
+
+<p align="center">
+  <a href="https://badugisoft.github.io/gtv-remote/"><strong>🌐 Site du projet</strong></a> ·
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><strong>⬇️ Télécharger la dernière version</strong></a> ·
+  <a href="#captures-décran">Captures d'écran</a> ·
+  <a href="#fonctionnalités">Fonctionnalités</a> ·
+  <a href="#raccourcis-clavier">Raccourcis</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#faq--dépannage">FAQ</a> ·
+  <a href="#contribuer--sécurité">Contribuer</a>
 </p>
 
 ---
@@ -62,9 +76,10 @@
   - Résolution des noms d'appareils Unicode et internationaux.
   - Mémorise automatiquement le dernier téléviseur connecté et rétablit instantanément la connexion au lancement.
 
-- **Connexion TLS rapide et sécurisée** :
+- **Connexion TLS rapide, sécurisée & confidentialité locale** :
   - Chiffrement TLS mutuel bidirectionnel conforme au protocole Android TV Remote v2.
   - Génération intégrée de certificats clients RSA-2048 temporaires via le framework `Security` d'Apple (aucun binaire `openssl` externe requis).
+  - **100 % local et sans télémétrie** : tout le trafic reste sur votre réseau Wi-Fi/LAN sans aucune analyse ni serveur externe. Voir [SECURITY.md](../SECURITY.md).
 
 - **Navigation complète au clavier et retour visuel** :
   - Naviguez dans les menus TV avec les flèches, `Entrée`, `Échap`, `H`, `Espace` et les touches de volume.
@@ -168,16 +183,64 @@ make uninstall
 
 ---
 
+## FAQ & Dépannage
+
+<details>
+<summary><strong>macOS indique que le développeur n'est pas identifié</strong></summary>
+
+Les versions publiées sont signées ad-hoc. Ouvrez **Réglages Système → Confidentialité et sécurité** et cliquez sur **Ouvrir quand même**, ou exécutez `xattr -cr "/Applications/GTV Remote.app"` dans le Terminal.
+
+</details>
+
+<details>
+<summary><strong>Mon téléviseur Google TV / Android TV n'apparaît pas dans la liste</strong></summary>
+
+1. Vérifiez que votre Mac et la TV sont sur le même sous-réseau Wi-Fi.
+2. Autorisez **GTV Remote** dans **Réglages Système → Confidentialité et sécurité → Réseau local**.
+3. Assurez-vous que **Android TV Remote Service** est activé sur la TV, puis relancez une recherche dans l'app.
+
+</details>
+
+<details>
+<summary><strong>Comment fonctionnent les liens profonds personnalisés dans Quick Apps ?</strong></summary>
+
+Ouvrez les **Paramètres des apps rapides** pour réorganiser par glisser-déposer ou ajouter des apps via `https://` ou `app://`. Les 9 premières apps visibles sont liées aux touches `1` à `9`.
+
+</details>
+
+<details>
+<summary><strong>GTV Remote collecte-t-il des données ou contacte-t-il des serveurs externes ?</strong></summary>
+
+Non. Toute communication reste strictement sur votre réseau local via TLS mutuel et un certificat RSA-2048 généré localement. Voir [SECURITY.md](../SECURITY.md).
+
+</details>
+
+<details>
+<summary><strong>Quels téléviseurs et versions de macOS sont pris en charge ?</strong></summary>
+
+Tout appareil compatible Google TV / Android TV Remote v2 (Chromecast avec Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) et Mac sous **macOS 14.0 (Sonoma)** ou ultérieur (Apple Silicon & Intel).
+
+</details>
+
+---
+
 ## Structure du projet
 
 ```
 gtv-remote/
-├── .github/workflows/release.yml     # Workflow CI/CD de publication automatisée
+├── .github/
+│   ├── ISSUE_TEMPLATE/               # Modèles de rapport de bug et de suggestion
+│   ├── PULL_REQUEST_TEMPLATE.md      # Liste de contrôle pour les PR
+│   └── workflows/
+│       ├── pages.yml                 # Déploiement automatisé GitHub Pages
+│       └── release.yml               # Workflow CI/CD de publication automatisée
 ├── AGENTS.md                         # Directives pour agents IA et développeurs
+├── CONTRIBUTING.md                   # Guide de contribution et de compilation
+├── LICENSE                           # Licence MIT
 ├── Makefile                          # Script d'empaquetage et de déploiement
 ├── Package.swift                     # Manifeste Swift Package Manager
-├── LICENSE                           # Licence MIT
 ├── README.md                         # Documentation principale (anglais)
+├── SECURITY.md                       # Architecture de confidentialité & signalement
 ├── Resources/
 │   ├── AppIcon.icns                  # Icône de l'application macOS
 │   └── Info.plist                    # Configuration du bundle et autorisations
@@ -223,14 +286,25 @@ gtv-remote/
 │   ├── keyboard_shortcuts.png
 │   ├── quick_apps_settings.png
 │   └── remote_main.png
-└── docs/                             # Documentation traduite
-    ├── README.de.md                  # Deutsch
-    ├── README.es.md                  # Español
-    ├── README.fr.md                  # Français
-    ├── README.ja.md                  # 日本語
-    ├── README.ko.md                  # 한국어
-    └── README.zh-Hans.md             # 简体中文
+├── docs/                             # Documentation traduite
+│   ├── README.de.md                  # Deutsch
+│   ├── README.es.md                  # Español
+│   ├── README.fr.md                  # Français
+│   ├── README.ja.md                  # 日本語
+│   ├── README.ko.md                  # 한국어
+│   └── README.zh-Hans.md             # 简体中文
+└── site/                             # Site promotionnel GitHub Pages
+    ├── index.html
+    ├── styles.css
+    └── i18n.js
 ```
+
+---
+
+## Contribuer & Sécurité
+
+- Les contributions sont les bienvenues ! Consultez [CONTRIBUTING.md](../CONTRIBUTING.md) pour la compilation locale, les règles de traduction en 7 langues et les Pull Requests.
+- Pour en savoir plus sur la confidentialité locale ou signaler une faille, consultez [SECURITY.md](../SECURITY.md).
 
 ---
 

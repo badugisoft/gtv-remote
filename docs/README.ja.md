@@ -10,6 +10,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><img src="https://img.shields.io/github/v/release/badugisoft/gtv-remote?style=flat-square" alt="Latest Release" /></a>
+  <a href="https://github.com/badugisoft/gtv-remote/releases"><img src="https://img.shields.io/github/downloads/badugisoft/gtv-remote/total?style=flat-square" alt="Total Downloads" /></a>
+  <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
@@ -25,6 +28,17 @@
   <a href="README.de.md">Deutsch</a> ·
   <a href="README.fr.md">Français</a> ·
   <a href="README.es.md">Español</a>
+</p>
+
+<p align="center">
+  <a href="https://badugisoft.github.io/gtv-remote/"><strong>🌐 プロジェクトサイト</strong></a> ·
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><strong>⬇️ 最新リリースをダウンロード</strong></a> ·
+  <a href="#スクリーンショット">スクリーンショット</a> ·
+  <a href="#主な機能">主な機能</a> ·
+  <a href="#キーボードショートカット一覧">ショートカット</a> ·
+  <a href="#インストール方法">インストール</a> ·
+  <a href="#よくある質問-faq">FAQ</a> ·
+  <a href="#コントリビュートとセキュリティ">コントリビュート</a>
 </p>
 
 ---
@@ -62,9 +76,10 @@
   - Unicode や多言語を含むデバイス名も正確に解決・表示します。
   - 最後に接続した TV を記憶し、起動時にすぐ再接続します。
 
-- **高速・安全な TLS 接続**:
+- **高速・安全な TLS 接続とローカルプライバシー**:
   - Android TV Remote v2 プロトコル準拠の双方向相互 TLS 暗号化通信。
   - Apple の `Security.framework` を直接利用し、一時的な RSA-2048 クライアント証明書をアプリ内で生成します（外部 `openssl` バイナリ不要）。
+  - **100% ローカル通信 & テレメトリなし**: すべての検出・操作通信はローカル Wi-Fi/LAN 内で完結し、外部サーバーへの送信は一切ありません。詳細は [SECURITY.md](../SECURITY.md) をご覧ください。
 
 - **キーボード操作 & 視覚的フィードバック**:
   - 矢印キー、`Enter`、`Esc`、`Home`、`Space`、音量キーで TV メニューを快適に操作できます。
@@ -168,16 +183,64 @@ make uninstall
 
 ---
 
+## よくある質問 (FAQ)
+
+<details>
+<summary><strong>macOS で「開発元を検証できない」と表示されて開けません</strong></summary>
+
+リリース版は ad-hoc 署名されています。**システム設定 → プライバシーとセキュリティ**で**このまま開く**をクリックするか、ターミナルで `xattr -cr "/Applications/GTV Remote.app"` を実行してください。
+
+</details>
+
+<details>
+<summary><strong>デバイス一覧に Google TV / Android TV が表示されません</strong></summary>
+
+1. Mac と TV が同じ Wi-Fi サブネットに接続されていることを確認してください。
+2. **システム設定 → プライバシーとセキュリティ → ローカルネットワーク**で **GTV Remote** が許可されていることを確認してください。
+3. TV 側で **Android TV Remote Service** が有効になっていることを確認し、アプリ上部の再スキャンを実行してください。
+
+</details>
+
+<details>
+<summary><strong>クイックアプリのカスタムディープリンクはどのように使いますか？</strong></summary>
+
+**クイックアプリ設定**でドラッグ＆ドロップによる並び替え、表示切替、`https://` または `app://` URI によるカスタムアプリ追加が可能です。表示中の上位 9 個は `1`〜`9` キーで即座に起動できます。
+
+</details>
+
+<details>
+<summary><strong>分析データの収集や外部サーバーとの通信はありますか？</strong></summary>
+
+いいえ。ローカル生成された RSA-2048 証明書と相互 TLS を使い、ローカルネットワーク内でのみ TV と通信します。詳細は [SECURITY.md](../SECURITY.md) をご覧ください。
+
+</details>
+
+<details>
+<summary><strong>対応している TV と macOS バージョンは？</strong></summary>
+
+Google TV / Android TV Remote v2 対応デバイス（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield など）および **macOS 14.0 (Sonoma)** 以降の Apple Silicon / Intel Mac に対応しています。
+
+</details>
+
+---
+
 ## プロジェクト構成
 
 ```
 gtv-remote/
-├── .github/workflows/release.yml     # CI/CD 自動リリースワークフロー
+├── .github/
+│   ├── ISSUE_TEMPLATE/               # バグ報告・機能要望テンプレート
+│   ├── PULL_REQUEST_TEMPLATE.md      # PR チェックリストテンプレート
+│   └── workflows/
+│       ├── pages.yml                 # GitHub Pages 自動デプロイワークフロー
+│       └── release.yml               # CI/CD 自動リリースワークフロー
 ├── AGENTS.md                         # AI エージェント & 開発者向けガイドライン
+├── CONTRIBUTING.md                   # コントリビュート & ビルドガイド
+├── LICENSE                           # MIT ライセンス
 ├── Makefile                          # リリースパッケージング & 配置スクリプト
 ├── Package.swift                     # Swift Package Manager マニフェスト
-├── LICENSE                           # MIT ライセンス
 ├── README.md                         # 英語ドキュメント（ベース）
+├── SECURITY.md                       # プライバシー構成 & 脆弱性報告案内
 ├── Resources/
 │   ├── AppIcon.icns                  # macOS アプリアイコン
 │   └── Info.plist                    # バンドル構成および権限設定
@@ -223,14 +286,25 @@ gtv-remote/
 │   ├── keyboard_shortcuts.png
 │   ├── quick_apps_settings.png
 │   └── remote_main.png
-└── docs/                             # 各言語ドキュメント
-    ├── README.de.md                  # Deutsch
-    ├── README.es.md                  # Español
-    ├── README.fr.md                  # Français
-    ├── README.ja.md                  # 日本語
-    ├── README.ko.md                  # 한국어
-    └── README.zh-Hans.md             # 简体中文
+├── docs/                             # 各言語ドキュメント
+│   ├── README.de.md                  # Deutsch
+│   ├── README.es.md                  # Español
+│   ├── README.fr.md                  # Français
+│   ├── README.ja.md                  # 日本語
+│   ├── README.ko.md                  # 한국어
+│   └── README.zh-Hans.md             # 简体中文
+└── site/                             # GitHub Pages 紹介サイト
+    ├── index.html
+    ├── styles.css
+    └── i18n.js
 ```
+
+---
+
+## コントリビュートとセキュリティ
+
+- コントリビュートを歓迎します！ローカルビルド手順、7 言語ローカライズ規約、PR 手順は [CONTRIBUTING.md](../CONTRIBUTING.md) をご覧ください。
+- ローカル専用プライバシー設計および脆弱性の報告方法は [SECURITY.md](../SECURITY.md) をご確認ください。
 
 ---
 

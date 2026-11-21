@@ -10,6 +10,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><img src="https://img.shields.io/github/v/release/badugisoft/gtv-remote?style=flat-square" alt="Latest Release" /></a>
+  <a href="https://github.com/badugisoft/gtv-remote/releases"><img src="https://img.shields.io/github/downloads/badugisoft/gtv-remote/total?style=flat-square" alt="Total Downloads" /></a>
+  <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
@@ -25,6 +28,17 @@
   <a href="README.de.md">Deutsch</a> ·
   <a href="README.fr.md">Français</a> ·
   <a href="README.es.md">Español</a>
+</p>
+
+<p align="center">
+  <a href="https://badugisoft.github.io/gtv-remote/"><strong>🌐 项目主页</strong></a> ·
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><strong>⬇️ 下载最新版本</strong></a> ·
+  <a href="#屏幕截图">屏幕截图</a> ·
+  <a href="#功能特性">功能特性</a> ·
+  <a href="#键盘快捷键参考">快捷键</a> ·
+  <a href="#安装指南">安装指南</a> ·
+  <a href="#常见问题">常见问题</a> ·
+  <a href="#贡献与安全">贡献与安全</a>
 </p>
 
 ---
@@ -62,9 +76,10 @@
   - 完美解析 Unicode 与多语言设备名称。
   - 自动记住上次连接的电视，启动应用后即刻恢复连接。
 
-- **快速安全的 TLS 连接**：
+- **快速安全的 TLS 连接与本地隐私**：
   - 基于 Android TV Remote v2 协议实现双向互信 TLS 加密。
   - 直接调用 Apple `Security.framework` 在本地生成临时 RSA-2048 客户端证书（无需外部 `openssl` 二进制文件）。
+  - **100% 本地通信与零遥测**：所有设备发现与控制流量均仅在本地 Wi-Fi/LAN 内进行，无任何分析或外部服务器连接。详情请参阅 [SECURITY.md](../SECURITY.md)。
 
 - **完整键盘导航与视觉反馈**：
   - 使用方向键、`Enter`、`Esc`、`Home`、`Space` 和音量键轻松控制电视菜单。
@@ -168,16 +183,64 @@ make uninstall
 
 ---
 
+## 常见问题
+
+<details>
+<summary><strong>macOS 提示“无法验证开发者”或阻止打开应用怎么办？</strong></summary>
+
+预构建版本采用 ad-hoc 签名。请打开**系统设置 → 隐私与安全性**点击**仍要打开**，或在终端执行 `xattr -cr "/Applications/GTV Remote.app"`。
+
+</details>
+
+<details>
+<summary><strong>设备列表中未显示我的 Google TV / Android TV</strong></summary>
+
+1. 确认 Mac 与电视连接在同一 Wi-Fi 子网。
+2. 前往**系统设置 → 隐私与安全性 → 本地网络**，确认已允许 **GTV Remote** 访问本地网络。
+3. 确认电视已开启 **Android TV Remote Service**，然后点击应用顶部的重新扫描按钮。
+
+</details>
+
+<details>
+<summary><strong>快捷应用的自定义深层链接如何使用？</strong></summary>
+
+在**快捷应用设置**中可通过拖拽调整顺序、切换显示状态，或使用 `https://` / `app://` URI 添加自定义应用。排名前 9 的可见应用可直接通过键盘 `1`–`9` 启动。
+
+</details>
+
+<details>
+<summary><strong>GTV Remote 会收集数据或连接外部服务器吗？</strong></summary>
+
+不会。所有通信均通过双向 TLS 与本地生成的 RSA-2048 证书在局域网内完成。详情请参阅 [SECURITY.md](../SECURITY.md)。
+
+</details>
+
+<details>
+<summary><strong>支持哪些电视与 macOS 版本？</strong></summary>
+
+支持所有兼容 Google TV / Android TV Remote v2 的设备（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield 等）以及 **macOS 14.0 (Sonoma)** 及更高版本的 Apple Silicon / Intel Mac。
+
+</details>
+
+---
+
 ## 项目结构
 
 ```
 gtv-remote/
-├── .github/workflows/release.yml     # CI/CD 自动发布工作流
+├── .github/
+│   ├── ISSUE_TEMPLATE/               # 问题与功能请求模板
+│   ├── PULL_REQUEST_TEMPLATE.md      # PR 检查清单模板
+│   └── workflows/
+│       ├── pages.yml                 # GitHub Pages 自动部署工作流
+│       └── release.yml               # CI/CD 自动发布工作流
 ├── AGENTS.md                         # AI 代理与开发者指南
+├── CONTRIBUTING.md                   # 贡献与构建指南
+├── LICENSE                           # MIT 许可证
 ├── Makefile                          # 发布打包与部署脚本
 ├── Package.swift                     # Swift Package Manager 清单
-├── LICENSE                           # MIT 许可证
 ├── README.md                         # 英文文档（主文档）
+├── SECURITY.md                       # 隐私架构与安全报告说明
 ├── Resources/
 │   ├── AppIcon.icns                  # macOS 应用图标
 │   └── Info.plist                    # Bundle 配置与权限说明
@@ -223,14 +286,25 @@ gtv-remote/
 │   ├── keyboard_shortcuts.png
 │   ├── quick_apps_settings.png
 │   └── remote_main.png
-└── docs/                             # 多语言文档
-    ├── README.de.md                  # Deutsch
-    ├── README.es.md                  # Español
-    ├── README.fr.md                  # Français
-    ├── README.ja.md                  # 日本語
-    ├── README.ko.md                  # 한국어
-    └── README.zh-Hans.md             # 简体中文
+├── docs/                             # 多语言文档
+│   ├── README.de.md                  # Deutsch
+│   ├── README.es.md                  # Español
+│   ├── README.fr.md                  # Français
+│   ├── README.ja.md                  # 日本語
+│   ├── README.ko.md                  # 한국어
+│   └── README.zh-Hans.md             # 简体中文
+└── site/                             # GitHub Pages 宣传网站
+    ├── index.html
+    ├── styles.css
+    └── i18n.js
 ```
+
+---
+
+## 贡献与安全
+
+- 欢迎贡献代码！构建指南、7 种语言本地化规范与 PR 流程请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)。
+- 本地隐私架构与安全漏洞报告方式请参阅 [SECURITY.md](../SECURITY.md)。
 
 ---
 

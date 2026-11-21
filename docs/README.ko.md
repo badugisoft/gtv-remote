@@ -10,6 +10,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><img src="https://img.shields.io/github/v/release/badugisoft/gtv-remote?style=flat-square" alt="Latest Release" /></a>
+  <a href="https://github.com/badugisoft/gtv-remote/releases"><img src="https://img.shields.io/github/downloads/badugisoft/gtv-remote/total?style=flat-square" alt="Total Downloads" /></a>
+  <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
   <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
@@ -25,6 +28,17 @@
   <a href="README.de.md">Deutsch</a> ·
   <a href="README.fr.md">Français</a> ·
   <a href="README.es.md">Español</a>
+</p>
+
+<p align="center">
+  <a href="https://badugisoft.github.io/gtv-remote/"><strong>🌐 프로젝트 웹사이트</strong></a> ·
+  <a href="https://github.com/badugisoft/gtv-remote/releases/latest"><strong>⬇️ 최신 릴리즈 다운로드</strong></a> ·
+  <a href="#스크린샷">스크린샷</a> ·
+  <a href="#주요-기능">주요 기능</a> ·
+  <a href="#키보드-단축키-안내">단축키</a> ·
+  <a href="#설치-방법">설치 방법</a> ·
+  <a href="#자주-묻는-질문-faq">FAQ</a> ·
+  <a href="#기여-및-보안">기여 및 보안</a>
 </p>
 
 ---
@@ -62,9 +76,10 @@
   - 유니코드 및 다국어 기기 이름도 올바르게 표시합니다.
   - 마지막으로 연결한 TV를 자동으로 기억해 앱 실행 시 즉시 다시 연결합니다.
 
-- **빠르고 안전한 TLS 연결**:
+- **빠르고 안전한 TLS 연결 및 로컬 프라이버시**:
   - Android TV Remote v2 프로토콜 기반의 양방향 상호 TLS 암호화 통신을 제공합니다.
   - 외부 `openssl` 바이너리 없이 Apple `Security.framework`를 직접 사용해 일회성 RSA-2048 클라이언트 인증서를 내장 생성합니다.
+  - **100% 로컬 통신 & 제로 텔레메트리**: 모든 기기 검색과 제어 트래픽은 로컬 Wi-Fi/LAN 내부에서만 처리되며 외부 서버 전송이나 분석 데이터 수집이 없습니다. 자세한 내용은 [SECURITY.md](../SECURITY.md)를 참고하세요.
 
 - **완전한 키보드 내비게이션 및 시각적 피드백**:
   - 방향키, `Enter`, `Esc`, `Home`, `Space`, 볼륨 조절 키로 TV 메뉴를 손쉽게 탐색할 수 있습니다.
@@ -168,16 +183,64 @@ make uninstall
 
 ---
 
+## 자주 묻는 질문 (FAQ)
+
+<details>
+<summary><strong>macOS에서 "확인되지 않은 개발자" 경고가 표시되며 앱이 열리지 않습니다</strong></summary>
+
+릴리즈 앱은 유료 Apple Developer ID 없이 ad-hoc 서명되어 있습니다. **시스템 설정 → 개인정보 보호 및 보안**에서 **확인 없이 열기**를 클릭하거나 터미널에서 `xattr -cr "/Applications/GTV Remote.app"`을 실행하세요.
+
+</details>
+
+<details>
+<summary><strong>기기 목록에 Google TV / Android TV가 나타나지 않습니다</strong></summary>
+
+1. Mac과 TV가 동일한 Wi-Fi 네트워크 / 서브넷에 연결되어 있는지 확인하세요.
+2. **시스템 설정 → 개인정보 보호 및 보안 → 로컬 네트워크**에서 **GTV Remote** 권한이 허용되어 있는지 확인하세요.
+3. TV에서 **Android TV Remote Service**가 켜져 있는지 확인한 뒤 앱 상단의 **기기 다시 검색**을 누르세요.
+
+</details>
+
+<details>
+<summary><strong>빠른 앱 사용자 정의 딥링크는 어떻게 사용하나요?</strong></summary>
+
+**빠른 앱 설정**에서 드래그 앤 드롭으로 순서를 바꾸거나 표시 여부를 선택하고, `https://` 또는 `app://` 딥링크 URI로 사용자 앱을 추가할 수 있습니다. 표시 목록의 상위 9개 앱은 키보드 `1`~`9` 키로 바로 실행됩니다.
+
+</details>
+
+<details>
+<summary><strong>분석 데이터나 사용 정보를 외부 서버로 전송하나요?</strong></summary>
+
+아니요. 모든 통신은 로컬 네트워크 내에서 Mac과 TV 간 상호 TLS 및 로컬 생성 RSA-2048 인증서로만 처리됩니다. 자세한 내용은 [SECURITY.md](../SECURITY.md)를 참고하세요.
+
+</details>
+
+<details>
+<summary><strong>지원되는 TV 기기와 macOS 버전은 무엇인가요?</strong></summary>
+
+Google TV / Android TV Remote v2를 지원하는 모든 TV·스트리밍 기기(Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield 등)와 **macOS 14.0 (Sonoma)** 이상이 설치된 Apple Silicon 및 Intel Mac을 지원합니다.
+
+</details>
+
+---
+
 ## 프로젝트 구조
 
 ```
 gtv-remote/
-├── .github/workflows/release.yml     # CI/CD 자동 릴리즈 워크플로
+├── .github/
+│   ├── ISSUE_TEMPLATE/               # 버그 리포트, 기능 요청 및 설정
+│   ├── PULL_REQUEST_TEMPLATE.md      # PR 체크리스트 템플릿
+│   └── workflows/
+│       ├── pages.yml                 # GitHub Pages 자동 배포 워크플로
+│       └── release.yml               # CI/CD 자동 릴리즈 워크플로
 ├── AGENTS.md                         # AI 에이전트 및 개발자 가이드라인
+├── CONTRIBUTING.md                   # 기여 및 빌드 가이드
+├── LICENSE                           # MIT 라이선스
 ├── Makefile                          # 릴리즈 패키징 및 배포 스크립트
 ├── Package.swift                     # Swift Package Manager 매니페스트
-├── LICENSE                           # MIT 라이선스
 ├── README.md                         # 영문 프로젝트 문서 (기본)
+├── SECURITY.md                       # 프라이버시 아키텍처 및 보안 제보 안내
 ├── Resources/
 │   ├── AppIcon.icns                  # macOS 앱 번들 아이콘
 │   └── Info.plist                    # 번들 구성 및 권한 설정
@@ -223,14 +286,25 @@ gtv-remote/
 │   ├── keyboard_shortcuts.png
 │   ├── quick_apps_settings.png
 │   └── remote_main.png
-└── docs/                             # 다국어 문서
-    ├── README.de.md                  # Deutsch
-    ├── README.es.md                  # Español
-    ├── README.fr.md                  # Français
-    ├── README.ja.md                  # 日本語
-    ├── README.ko.md                  # 한국어
-    └── README.zh-Hans.md             # 简体中文
+├── docs/                             # 다국어 문서
+│   ├── README.de.md                  # Deutsch
+│   ├── README.es.md                  # Español
+│   ├── README.fr.md                  # Français
+│   ├── README.ja.md                  # 日本語
+│   ├── README.ko.md                  # 한국어
+│   └── README.zh-Hans.md             # 简体中文
+└── site/                             # GitHub Pages 홍보 웹사이트
+    ├── index.html
+    ├── styles.css
+    └── i18n.js
 ```
+
+---
+
+## 기여 및 보안
+
+- 기여를 환영합니다! 로컬 빌드 방법, 7개 언어 다국어 규칙, PR 절차는 [CONTRIBUTING.md](../CONTRIBUTING.md)를 확인하세요.
+- 로컬 전용 프라이버시 구조 및 보안 취약점 제보 방법은 [SECURITY.md](../SECURITY.md)를 참고하세요.
 
 ---
 

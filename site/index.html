@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>GTV Remote — Native macOS Remote Control for Google TV &amp; Android TV</title>
+  <meta name="description" content="A modern, native macOS remote control & quick launcher for Google TV / Android TV with low-latency TLS 2-way control, mDNS auto-discovery, DHCP IP tracking, instant text typing, quick app launchers, and keyboard hotkeys.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="GTV Remote — Native macOS Remote Control for Google TV & Android TV">
+  <meta property="og:description" content="Low-latency TLS 2-way control, mDNS auto-discovery, instant text typing, quick app launchers, and keyboard hotkeys right from your Mac.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://badugisoft.github.io/gtv-remote/">
+  <meta property="og:image" content="https://badugisoft.github.io/gtv-remote/assets/remote_main.png">
+
+  <link rel="icon" type="image/png" href="assets/app_icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="i18n.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#top" class="brand">
+        <img
+          src="assets/app_icon.png"
+          onerror="this.onerror=null;this.src='../assets/app_icon.png';"
+          alt="GTV Remote Icon"
+          width="32"
+          height="32"
+        >
+        <span>GTV Remote</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="#screenshots" data-i18n="nav_preview">Preview</a>
+        <a href="#features" data-i18n="nav_features">Features</a>
+        <a href="#shortcuts" data-i18n="nav_shortcuts">Shortcuts</a>
+        <a href="#how-it-works" data-i18n="nav_how">How It Works</a>
+        <a href="#install" data-i18n="nav_install">Install</a>
+        <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <select id="lang-select" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="ko">한국어</option>
+          <option value="zh">简体中文</option>
+          <option value="ja">日本語</option>
+          <option value="de">Deutsch</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+        </select>
+        <a
+          class="btn btn-ghost"
+          href="https://github.com/badugisoft/gtv-remote"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="nav_github"
+        >GitHub</a>
+        <a
+          class="btn btn-primary"
+          href="https://github.com/badugisoft/gtv-remote/releases/latest"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="nav_download"
+        >Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="hero-icon-wrap">
+            <img
+              src="assets/app_icon.png"
+              onerror="this.onerror=null;this.src='../assets/app_icon.png';"
+              alt="GTV Remote App Icon"
+              width="84"
+              height="84"
+            >
+          </div>
+          <div class="badge-row">
+            <span class="badge">macOS 14.0+</span>
+            <span class="badge">Swift 6.0+</span>
+            <span class="badge" data-i18n="badge_arch">Apple Silicon &amp; Intel</span>
+            <span class="badge badge-accent" data-i18n="badge_mit">MIT License</span>
+          </div>
+          <h1 data-i18n="hero_title">Control Your Google TV Right From Your Mac</h1>
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
+            A native macOS remote control &amp; quick app launcher for Google TV and Android TV. Zero-config mDNS discovery, real-time DHCP IP tracking, mutual TLS security, instant keyboard navigation, and 1-click clipboard typing.
+          </p>
+          <div class="hero-cta">
+            <a
+              class="btn btn-primary btn-lg"
+              href="https://github.com/badugisoft/gtv-remote/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="hero_cta_download"
+            >Download Latest Release</a>
+            <a
+              class="btn btn-secondary btn-lg"
+              href="https://github.com/badugisoft/gtv-remote"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="hero_cta_github"
+            >View on GitHub</a>
+          </div>
+          <p class="hero-note" data-i18n="hero_note">
+            100% local LAN communication · No telemetry · No external servers
+          </p>
+        </div>
+
+        <div class="hero-visual">
+          <div class="screenshot-frame">
+            <img
+              src="assets/remote_main.png"
+              onerror="this.onerror=null;this.src='../assets/remote_main.png';"
+              alt="GTV Remote Native macOS Frosted Glass UI"
+              width="310"
+              height="560"
+              fetchpriority="high"
+            >
+          </div>
+          <p class="screenshot-caption" data-i18n="screenshot_caption">
+            Native macOS Frosted Glass UI (.sidebar material)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshots Gallery Section -->
+    <section class="section section-alt" id="screenshots">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="gallery_title">Designed for macOS</h2>
+          <p data-i18n="gallery_subtitle">Frosted glass remote HUD, drag-and-drop Quick Apps manager, and built-in keyboard shortcuts reference.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-card">
+            <img
+              src="assets/remote_main.png"
+              onerror="this.onerror=null;this.src='../assets/remote_main.png';"
+              alt="GTV Remote Main Window"
+              width="280"
+              height="506"
+              loading="lazy"
+            >
+            <figcaption data-i18n="gallery_cap1">Main Remote &amp; Smart Input</figcaption>
+          </figure>
+
+          <figure class="gallery-card">
+            <img
+              src="assets/quick_apps_settings.png"
+              onerror="this.onerror=null;this.src='../assets/quick_apps_settings.png';"
+              alt="Quick Apps Settings"
+              width="280"
+              height="506"
+              loading="lazy"
+            >
+            <figcaption data-i18n="gallery_cap2">Quick Apps Manager &amp; Custom Deep Links</figcaption>
+          </figure>
+
+          <figure class="gallery-card">
+            <img
+              src="assets/keyboard_shortcuts.png"
+              onerror="this.onerror=null;this.src='../assets/keyboard_shortcuts.png';"
+              alt="Keyboard Shortcuts Reference"
+              width="280"
+              height="506"
+              loading="lazy"
+            >
+            <figcaption data-i18n="gallery_cap3">Built-In Keyboard Shortcuts Sheet</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="features_title">Built for Speed, Privacy, and Native macOS Feel</h2>
+          <p data-i18n="features_subtitle">Every detail is engineered in Swift, SwiftUI, and AppKit for instant response from your menu bar or keyboard.</p>
+        </div>
+
+        <div class="features-grid">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🪟</div>
+            <h3 data-i18n="feat1_title">Native macOS Frosted Glass</h3>
+            <p data-i18n="feat1_desc">Crafted with SwiftUI and AppKit using native .sidebar NSVisualEffectView material. Stays resident in your menu bar for instant reopen without relaunching.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">📡</div>
+            <h3 data-i18n="feat2_title">Zero-Config mDNS &amp; DHCP Tracking</h3>
+            <p data-i18n="feat2_desc">Automatically discovers Google TV and Android TV devices (_androidtvremote2._tcp), tracks real-time DHCP IP changes, and prevents infinite reconnect loops.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🔒</div>
+            <h3 data-i18n="feat3_title">Mutual TLS &amp; 100% Local Privacy</h3>
+            <p data-i18n="feat3_desc">Generates transient RSA-2048 client certificates via Apple Security.framework. All traffic stays strictly on your LAN with zero telemetry or cloud servers.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">⌨️</div>
+            <h3 data-i18n="feat4_title">Full Keyboard &amp; Visual Feedback</h3>
+            <p data-i18n="feat4_desc">Navigate effortlessly with Arrow keys, Enter, Esc, Space, and volume hotkeys—paired with crisp 0.15s on-screen button press feedback.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">📋</div>
+            <h3 data-i18n="feat5_title">Smart Input &amp; Clipboard Sync</h3>
+            <p data-i18n="feat5_desc">Type searches, URLs, and passwords directly from your Mac keyboard, or press Cmd + V to paste your clipboard straight into your TV's text field.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🚀</div>
+            <h3 data-i18n="feat6_title">Quick Apps &amp; 7 Languages</h3>
+            <p data-i18n="feat6_desc">17 streaming presets, drag-and-drop reordering, custom deep links, 1–9 instant launch hotkeys, and full UI support for 7 languages.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keyboard Shortcuts Section -->
+    <section class="section section-alt" id="shortcuts">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="shortcuts_title">Keyboard Shortcuts</h2>
+          <p data-i18n="shortcuts_subtitle">Control your TV without reaching for the mouse when the remote window is focused.</p>
+        </div>
+
+        <div class="shortcuts-grid">
+          <div class="shortcut-item"><kbd>↑ ↓ ← →</kbd><span data-i18n="sc_arrows">D-Pad Navigation</span></div>
+          <div class="shortcut-item"><kbd>Enter</kbd><span data-i18n="sc_enter">Select / OK</span></div>
+          <div class="shortcut-item"><kbd>Esc</kbd><span data-i18n="sc_esc">Back / Exit Menu</span></div>
+          <div class="shortcut-item"><kbd>H</kbd><span data-i18n="sc_home">TV Home Screen</span></div>
+          <div class="shortcut-item"><kbd>Space</kbd><span data-i18n="sc_space">Play / Pause</span></div>
+          <div class="shortcut-item"><kbd>+ / -</kbd><span data-i18n="sc_vol">Volume Up / Down</span></div>
+          <div class="shortcut-item"><kbd>M</kbd><span data-i18n="sc_mute">Mute / Unmute</span></div>
+          <div class="shortcut-item"><kbd>P</kbd><span data-i18n="sc_power">Power Toggle</span></div>
+          <div class="shortcut-item"><kbd>A</kbd><span data-i18n="sc_assistant">Google Assistant</span></div>
+          <div class="shortcut-item"><kbd>I</kbd><span data-i18n="sc_input">Video Input Source</span></div>
+          <div class="shortcut-item"><kbd>1 – 9</kbd><span data-i18n="sc_apps">Launch Quick Apps 1–9</span></div>
+          <div class="shortcut-item"><kbd>⌘ + V</kbd><span data-i18n="sc_paste">Paste Clipboard to TV</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="how_title">Up and Running in 30 Seconds</h2>
+          <p data-i18n="how_subtitle">No ADB setup, no IP addresses to memorize, and no external dependencies.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">1</span>
+            <h3 data-i18n="step1_title">Auto-Discover TV</h3>
+            <p data-i18n="step1_desc">Connect your Mac and Google TV to the same Wi-Fi network. GTV Remote automatically finds your TV via Bonjour/mDNS.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">2</span>
+            <h3 data-i18n="step2_title">One-Time 6-Digit Pairing</h3>
+            <p data-i18n="step2_desc">Enter the 6-digit hex pairing code shown on your TV screen to establish a mutual TLS v2 connection.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">3</span>
+            <h3 data-i18n="step3_title">Control &amp; Launch</h3>
+            <p data-i18n="step3_desc">Use keyboard hotkeys, type or paste text, and launch streaming apps with 1–9 shortcuts right from your menu bar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="section section-alt" id="install">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="install_title">Installation</h2>
+          <p data-i18n="install_subtitle">Requires macOS 14.0 (Sonoma) or later on Apple Silicon or Intel.</p>
+        </div>
+
+        <div class="install-grid">
+          <div class="install-card">
+            <h3 data-i18n="install_opt1_title">Download Prebuilt App</h3>
+            <p data-i18n="install_opt1_desc">Grab the latest .dmg or .zip bundle directly from GitHub Releases and drag GTV Remote.app into /Applications.</p>
+            <a
+              class="btn btn-primary"
+              href="https://github.com/badugisoft/gtv-remote/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="install_opt1_btn"
+            >Download from Releases</a>
+          </div>
+
+          <div class="install-card">
+            <h3 data-i18n="install_opt2_title">Build from Source (Makefile)</h3>
+            <p data-i18n="install_opt2_desc">Requires Xcode 16+ or Swift 6.0+ Command Line Tools. Builds release binary, bundles into /Applications, and launches.</p>
+            <div class="code-box">
+              <code>git clone https://github.com/badugisoft/gtv-remote.git &amp;&amp; cd gtv-remote &amp;&amp; make install</code>
+              <button
+                type="button"
+                class="copy-btn"
+                data-copy="git clone https://github.com/badugisoft/gtv-remote.git && cd gtv-remote && make install"
+                data-i18n="btn_copy"
+              >Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section class="section accordion" id="faq" aria-labelledby="faq-heading">
+      <div class="container container-narrow">
+        <div class="section-header">
+          <h2 id="faq-heading" data-i18n="faq_title">Frequently Asked Questions</h2>
+        </div>
+
+        <details>
+          <summary data-i18n="faq1_q">macOS says the app is from an unidentified developer. How do I open it?</summary>
+          <div class="faq-body">
+            <p data-i18n="faq1_a">Prebuilt releases are ad-hoc signed. Open System Settings > Privacy & Security and click Open Anyway, or run xattr -cr "/Applications/GTV Remote.app" in Terminal.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary data-i18n="faq2_q">Why isn't my Google TV / Android TV showing up in the device list?</summary>
+          <div class="faq-body">
+            <p data-i18n="faq2_a">Ensure your Mac and TV are on the same Wi-Fi subnet, grant Local Network permission under System Settings > Privacy & Security > Local Network, and verify Android TV Remote Service is enabled on the TV.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary data-i18n="faq3_q">How do Quick Apps and custom deep links work?</summary>
+          <div class="faq-body">
+            <p data-i18n="faq3_a">Quick Apps send deep link URIs (https:// or app://) directly over the Android TV Remote v2 protocol. You can reorder presets, toggle visibility, or add custom apps in Quick Apps Settings, and launch positions 1–9 via number keys.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary data-i18n="faq4_q">Does GTV Remote collect any data or connect to external servers?</summary>
+          <div class="faq-body">
+            <p data-i18n="faq4_a">No. GTV Remote communicates exclusively over your local network with your TV using mutual TLS and a locally generated RSA-2048 certificate. There are zero analytics, telemetry, or external server calls.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary data-i18n="faq5_q">Which TVs and macOS versions are supported?</summary>
+          <div class="faq-body">
+            <p data-i18n="faq5_a">Any TV or streaming box supporting Google TV / Android TV Remote v2 (Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) and Macs running macOS 14.0 Sonoma or newer (Apple Silicon & Intel).</p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p data-i18n="footer_copy">GTV Remote — Open Source under the MIT License.</p>
+      <div class="footer-links">
+        <a href="https://github.com/badugisoft/gtv-remote" target="_blank" rel="noopener noreferrer" data-i18n="footer_repo">Repository</a>
+        <a href="https://github.com/badugisoft/gtv-remote/releases" target="_blank" rel="noopener noreferrer" data-i18n="footer_releases">Releases</a>
+        <a href="https://github.com/badugisoft/gtv-remote/issues" target="_blank" rel="noopener noreferrer" data-i18n="footer_issues">Issues</a>
+        <a href="https://github.com/badugisoft/gtv-remote/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" data-i18n="footer_security">Security</a>
+        <a href="https://github.com/badugisoft/gtv-remote/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-i18n="footer_contributing">Contributing</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

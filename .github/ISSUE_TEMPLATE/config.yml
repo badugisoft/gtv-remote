@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Project Website & FAQ
+    url: https://badugisoft.github.io/gtv-remote/
+    about: View features, keyboard shortcuts, and troubleshooting FAQ
+  - name: Latest Releases
+    url: https://github.com/badugisoft/gtv-remote/releases
+    about: Download the latest .dmg or .zip release
