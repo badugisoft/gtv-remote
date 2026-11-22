@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install create-dmg
         run: brew install create-dmg
@@ -84,6 +86,38 @@ jobs:
         run: |
           security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
 
+      - name: Extract Release Notes from CHANGELOG.md
+        id: notes
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          NOTES_FILE="$RUNNER_TEMP/release_notes.md"
+          if python3 - "$VERSION" "$NOTES_FILE" <<'EOF'
+          import re, sys
+          version, out_path = sys.argv[1], sys.argv[2]
+          with open("CHANGELOG.md", encoding="utf-8") as f:
+              text = f.read()
+          pattern = rf"^## \[{re.escape(version)}\][^\n]*\n(.*?)(?=^## \[|\Z)"
+          m = re.search(pattern, text, flags=re.MULTILINE | re.DOTALL)
+          if m and m.group(1).strip():
+              with open(out_path, "w", encoding="utf-8") as out:
+                  out.write(m.group(1).strip() + "\n")
+              sys.exit(0)
+          sys.exit(1)
+          EOF
+          then
+            PREV_TAG=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+            if [ -n "$PREV_TAG" ]; then
+              printf "\n**Full Changelog**: https://github.com/%s/compare/%s...%s\n" "${{ github.repository }}" "$PREV_TAG" "$GITHUB_REF_NAME" >> "$NOTES_FILE"
+            else
+              printf "\n**Full Changelog**: https://github.com/%s/commits/%s\n" "${{ github.repository }}" "$GITHUB_REF_NAME" >> "$NOTES_FILE"
+            fi
+            echo "body_path=$NOTES_FILE" >> "$GITHUB_OUTPUT"
+            echo "generate_notes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "body_path=" >> "$GITHUB_OUTPUT"
+            echo "generate_notes=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -91,7 +125,8 @@ jobs:
           files: |
             dist/GTV-Remote-${{ github.ref_name }}.dmg
             dist/GTV-Remote-${{ github.ref_name }}.zip
-          generate_release_notes: true
+          body_path: ${{ steps.notes.outputs.body_path }}
+          generate_release_notes: ${{ steps.notes.outputs.generate_notes }}
           draft: false
           prerelease: false
         env:
