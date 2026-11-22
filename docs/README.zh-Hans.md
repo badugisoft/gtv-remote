@@ -134,22 +134,7 @@
 2. 打开 `.dmg` 文件（或解压 `.zip` 压缩包），将 **GTV Remote.app** 拖入 `/Applications`（应用程序）文件夹。
 3. 从 `/Applications` 中启动 **GTV Remote**。
 
-#### 解决 macOS“未验证开发者”/ 证书警告（Gatekeeper）
-
-由于 **GTV Remote** 使用 ad-hoc 方式签名且未购买付费 Apple Developer ID 证书，首次打开时 macOS 可能会显示安全提示（例如 *“Apple 无法验证‘GTV Remote.app’是否包含恶意软件”* 或 *“无法打开，因为无法验证开发者”*）。
-
-**方法 A — 通过“系统设置”允许运行（图形界面）：**
-
-1. 先尝试打开一次 **GTV Remote.app**，在弹出的提示框中点击 **完成**（或 **取消**）。
-2. 打开 **系统设置** → **隐私与安全性**。
-3. 向下滚动至 **安全性** 部分，在提示已阻止使用 `“GTV Remote.app”` 的信息旁点击 **仍要打开**。
-4. 在确认对话框中点击 **仍要打开**（或 **打开**），并输入 Mac 密码或使用触控 ID 验证。
-
-**方法 B — 通过终端移除隔离属性：**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **已签名并公证：** 官方发布版本（`v1.0.5+`）均使用 Apple Developer ID 证书签名并通过 Apple 公证（Notarization），可直接打开，不会触发 macOS Gatekeeper 安全警告。
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## 常见问题
 
 <details>
-<summary><strong>macOS 提示“无法验证开发者”或阻止打开应用怎么办？</strong></summary>
+<summary><strong>GTV Remote 是否经过 Apple 签名与公证？</strong></summary>
 
-预构建版本采用 ad-hoc 签名。请打开**系统设置 → 隐私与安全性**点击**仍要打开**，或在终端执行 `xattr -cr "/Applications/GTV Remote.app"`。
+是的。自 `v1.0.5` 起，官方发布版本均使用 Apple Developer ID 签名并通过 Apple 公证，不会弹出 Gatekeeper 警告。如果您使用的是早期版本（`v1.0.4` 及更早），请更新至最新版本。
 
 </details>
 

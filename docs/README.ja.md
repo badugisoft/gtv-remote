@@ -134,22 +134,7 @@
 2. `.dmg` を開く（または `.zip` を展開する）と表示される **GTV Remote.app** を `/Applications`（アプリケーション）フォルダへドラッグします。
 3. `/Applications` から **GTV Remote** を起動します。
 
-#### macOS の「開発元を検証できない」/ 証明書警告を解除する方法（Gatekeeper）
-
-**GTV Remote** は有料の Apple Developer ID 証明書ではなくアドホック署名で配布されているため、初回起動時に macOS の警告（*「Appleは“GTV Remote.app”に悪意のあるソフトウェアが含まれていないことを確認できませんでした」* または *「開発元を検証できないため開けません」*）が表示される場合があります。
-
-**方法 A — システム設定から許可する（GUI）:**
-
-1. まず **GTV Remote.app** を一度開き、警告ダイアログで **完了**（または **キャンセル**）をクリックします。
-2. **システム設定** → **プライバシーとセキュリティ** を開きます。
-3. 下部の **セキュリティ** セクションまでスクロールし、`“GTV Remote.app”は〜ブロックされました` というメッセージの横にある **このまま開く** をクリックします。
-4. 確認ダイアログで **このまま開く**（または **開く**）をクリックし、Mac のパスワードまたは Touch ID で認証します。
-
-**方法 B — ターミナルから検疫属性を削除する:**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **署名・公証済み:** 公式リリース（`v1.0.5+`）は Apple Developer ID 証明書で署名され、Apple の公証（Notarization）を受けているため、macOS Gatekeeper の警告なしでそのまま起動できます。
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## よくある質問 (FAQ)
 
 <details>
-<summary><strong>macOS で「開発元を検証できない」と表示されて開けません</strong></summary>
+<summary><strong>GTV Remote は Apple の署名・公証を受けていますか？</strong></summary>
 
-リリース版は ad-hoc 署名されています。**システム設定 → プライバシーとセキュリティ**で**このまま開く**をクリックするか、ターミナルで `xattr -cr "/Applications/GTV Remote.app"` を実行してください。
+はい。`v1.0.5` 以降の公式リリースは Apple Developer ID で署名され、Apple の公証（Notarization）を完了しているため、Gatekeeper の警告なしで起動できます。旧バージョン（`v1.0.4` 以前）をご利用の場合は最新バージョンへアップデートしてください。
 
 </details>
 

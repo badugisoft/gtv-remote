@@ -134,22 +134,7 @@ Wenn das Fernbedienungsfenster aktiv ist, stehen folgende Kurzbefehle zur Verfü
 2. Öffnen Sie die `.dmg`-Datei (oder entpacken Sie die `.zip`-Datei) und ziehen Sie **GTV Remote.app** in Ihren Ordner `/Applications` (**Programme**).
 3. Starten Sie **GTV Remote** aus `/Applications`.
 
-#### macOS-Warnung zu nicht verifiziertem Entwickler / Zertifikat beheben (Gatekeeper)
-
-Da **GTV Remote** ad-hoc ohne kostenpflichtiges Apple-Developer-ID-Zertifikat signiert ist, zeigt macOS beim ersten Start möglicherweise eine Warnung an (*„Apple konnte nicht überprüfen, ob ‚GTV Remote.app‘ frei von Schadsoftware ist“* oder *„kann nicht geöffnet werden, da der Entwickler nicht verifiziert werden kann“*).
-
-**Methode A — Über die Systemeinstellungen (GUI):**
-
-1. Versuchen Sie einmal, **GTV Remote.app** zu öffnen, und klicken Sie in der Warnmeldung auf **Fertig** (oder **Abbrechen**).
-2. Öffnen Sie **Systemeinstellungen** → **Datenschutz & Sicherheit**.
-3. Scrollen Sie nach unten zum Abschnitt **Sicherheit** und klicken Sie neben dem Hinweis, dass `„GTV Remote.app“` blockiert wurde, auf **Dennoch öffnen**.
-4. Bestätigen Sie im Dialog mit **Dennoch öffnen** (oder **Öffnen**) und authentifizieren Sie sich mit Ihrem Mac-Passwort oder Touch ID.
-
-**Methode B — Über das Terminal:**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **Signiert & Notarisiert:** Offizielle Releases (`v1.0.5+`) sind mit einem Apple Developer ID-Zertifikat signiert und von Apple notarisiert, sodass sie ohne Gatekeeper-Warnung gestartet werden können.
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## FAQ & Fehlerbehebung
 
 <details>
-<summary><strong>macOS meldet einen nicht identifizierten Entwickler</strong></summary>
+<summary><strong>Ist GTV Remote von Apple signiert und notarisiert?</strong></summary>
 
-Vorab-Releases sind ad-hoc signiert. Öffnen Sie **Systemeinstellungen → Datenschutz & Sicherheit** und klicken Sie auf **Dennoch öffnen**, oder führen Sie `xattr -cr "/Applications/GTV Remote.app"` im Terminal aus.
+Ja. Offizielle Releases ab `v1.0.5` sind mit einer Apple Developer ID signiert und von Apple notarisiert, sodass keine Gatekeeper-Warnung erscheint. Falls Sie eine ältere Version (`v1.0.4` oder früher) verwenden, aktualisieren Sie bitte auf das neueste Release.
 
 </details>
 

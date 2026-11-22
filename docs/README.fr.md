@@ -134,22 +134,7 @@ Lorsque la fenêtre de la télécommande est active, les raccourcis suivants son
 2. Ouvrez le `.dmg` (ou décompressez le `.zip`) et glissez **GTV Remote.app** dans votre dossier `/Applications`.
 3. Lancez **GTV Remote** depuis `/Applications`.
 
-#### Résoudre l'avertissement macOS de développeur non vérifié / certificat (Gatekeeper)
-
-Comme **GTV Remote** est signé en mode ad-hoc sans certificat payant Apple Developer ID, macOS peut afficher une alerte lors du premier lancement (*« Apple n’a pas pu vérifier que « GTV Remote.app » ne contient pas de logiciel malveillant »* ou *« ne peut pas être ouvert car le développeur ne peut pas être vérifié »*).
-
-**Méthode A — via Réglages Système (interface graphique) :**
-
-1. Essayez d'ouvrir **GTV Remote.app** une première fois, puis cliquez sur **OK** (ou **Annuler**) dans l'alerte.
-2. Ouvrez **Réglages Système** → **Confidentialité et sécurité**.
-3. Faites défiler jusqu'à la section **Sécurité** et cliquez sur **Ouvrir quand même** en face du message indiquant que `« GTV Remote.app »` a été bloqué.
-4. Confirmez en cliquant sur **Ouvrir quand même** (ou **Ouvrir**), puis saisissez votre mot de passe Mac ou utilisez Touch ID.
-
-**Méthode B — via le Terminal :**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **Signé et notarié :** Les versions officielles (`v1.0.5+`) sont signées avec un certificat Apple Developer ID et notariées par Apple, ce qui permet de les ouvrir directement sans avertissement Gatekeeper.
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## FAQ & Dépannage
 
 <details>
-<summary><strong>macOS indique que le développeur n'est pas identifié</strong></summary>
+<summary><strong>GTV Remote est-il signé et notarié par Apple ?</strong></summary>
 
-Les versions publiées sont signées ad-hoc. Ouvrez **Réglages Système → Confidentialité et sécurité** et cliquez sur **Ouvrir quand même**, ou exécutez `xattr -cr "/Applications/GTV Remote.app"` dans le Terminal.
+Oui. Les versions officielles à partir de `v1.0.5` sont signées avec un Apple Developer ID et notariées par Apple, et s'ouvrent sans avertissement Gatekeeper. Si vous utilisez une version antérieure (`v1.0.4` ou précédente), veuillez mettre à jour vers la dernière version.
 
 </details>
 

@@ -134,22 +134,7 @@ When the remote window is active, the following physical hotkeys are available:
 2. Open the `.dmg` (or extract the `.zip`) and drag **GTV Remote.app** into your `/Applications` folder.
 3. Launch **GTV Remote** from `/Applications`.
 
-#### Fixing macOS Unverified Developer / Certificate Warning (Gatekeeper)
-
-Because **GTV Remote** is signed ad-hoc without a paid Apple Developer ID certificate, macOS may display a warning on first launch (*"Apple could not verify 'GTV Remote.app' is free of malware"* or *"cannot be opened because the developer cannot be verified"*).
-
-**Method A — via System Settings (GUI):**
-
-1. Try to open **GTV Remote.app** once, then click **Done** (or **Cancel**) on the warning prompt.
-2. Open **System Settings** → **Privacy & Security**.
-3. Scroll down to the **Security** section and click **Open Anyway** next to the message stating `"GTV Remote.app" was blocked`.
-4. Confirm by clicking **Open Anyway** (or **Open**) in the dialog and authenticate with your Mac password or Touch ID.
-
-**Method B — via Terminal:**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **Signed & Notarized:** Official releases (`v1.0.5+`) are signed with an Apple Developer ID certificate and notarized by Apple, so they open directly without macOS Gatekeeper warnings.
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## FAQ & Troubleshooting
 
 <details>
-<summary><strong>macOS says "GTV Remote.app" cannot be opened or is from an unidentified developer</strong></summary>
+<summary><strong>Is GTV Remote signed and notarized by Apple?</strong></summary>
 
-Prebuilt releases are ad-hoc signed without a paid Apple Developer ID certificate. Open **System Settings → Privacy & Security** and click **Open Anyway**, or run `xattr -cr "/Applications/GTV Remote.app"` in Terminal.
+Yes. Official releases from `v1.0.5` onward are signed with an Apple Developer ID certificate and notarized by Apple, so they open without Gatekeeper warnings. If you are using an older version (`v1.0.4` or earlier), please update to the latest release.
 
 </details>
 

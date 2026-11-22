@@ -134,22 +134,7 @@
 2. `.dmg` 파일을 열거나 `.zip` 압축을 푼 뒤 **GTV Remote.app**을 `/Applications`(응용 프로그램) 폴더로 드래그하여 복사합니다.
 3. `/Applications` 폴더에서 **GTV Remote**를 실행합니다.
 
-#### macOS 확인되지 않은 개발자 / 인증서 경고 해결 방법 (Gatekeeper)
-
-**GTV Remote**는 유료 Apple Developer ID 인증서 없이 ad-hoc 서명되어 배포되므로, 처음 실행할 때 macOS에서 보안 경고(*"Apple이 'GTV Remote.app'에 악성 소프트웨어가 없는지 확인할 수 없습니다"* 또는 *"확인되지 않은 개발자가 배포했기 때문에 열 수 없습니다"*)가 표시될 수 있습니다.
-
-**방법 A — 시스템 설정에서 허용하기 (GUI):**
-
-1. 먼저 **GTV Remote.app**을 한 번 실행한 뒤, 경고 창에서 **완료**(또는 **취소**)를 클릭합니다.
-2. **시스템 설정** → **개인정보 보호 및 보안**을 엽니다.
-3. 아래쪽의 **보안** 섹션으로 스크롤하여 `"GTV Remote.app"의 사용이 차단되었습니다.` 안내 옆의 **확인 없이 열기** 버튼을 클릭합니다.
-4. 확인 대화상자에서 **확인 없이 열기**(또는 **열기**)를 클릭한 뒤 Mac 암호 또는 Touch ID로 인증합니다.
-
-**방법 B — 터미널에서 격리 속성 제거하기:**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **서명 및 공증 완료:** 공식 릴리즈(`v1.0.5+`)는 Apple Developer ID 인증서로 서명 및 Apple 공증(Notarization)을 거쳐 배포되므로 macOS Gatekeeper 경고 없이 바로 실행됩니다.
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## 자주 묻는 질문 (FAQ)
 
 <details>
-<summary><strong>macOS에서 "확인되지 않은 개발자" 경고가 표시되며 앱이 열리지 않습니다</strong></summary>
+<summary><strong>GTV Remote는 Apple 서명 및 공증을 받았나요?</strong></summary>
 
-릴리즈 앱은 유료 Apple Developer ID 없이 ad-hoc 서명되어 있습니다. **시스템 설정 → 개인정보 보호 및 보안**에서 **확인 없이 열기**를 클릭하거나 터미널에서 `xattr -cr "/Applications/GTV Remote.app"`을 실행하세요.
+네. `v1.0.5` 이상 공식 릴리즈는 Apple Developer ID 인증서로 서명되고 Apple 공증(Notarization)을 완료하여 Gatekeeper 경고 없이 실행됩니다. 이전 버전(`v1.0.4` 이하)을 사용 중이라면 최신 버전으로 업데이트해 주세요.
 
 </details>
 

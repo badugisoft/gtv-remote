@@ -134,22 +134,7 @@ Cuando la ventana del control remoto está activa, están disponibles los siguie
 2. Abre el archivo `.dmg` (o descomprime el `.zip`) y arrastra **GTV Remote.app** a tu carpeta `/Applications` (**Aplicaciones**).
 3. Inicia **GTV Remote** desde `/Applications`.
 
-#### Solucionar la advertencia de desarrollador no verificado / certificado en macOS (Gatekeeper)
-
-Debido a que **GTV Remote** está firmado de forma ad-hoc sin un certificado de pago Apple Developer ID, macOS puede mostrar una advertencia la primera vez que lo abras (*«Apple no pudo verificar que «GTV Remote.app» esté libre de software malicioso»* o *«no se puede abrir porque no se puede verificar el desarrollador»*).
-
-**Método A — desde Ajustes del Sistema (interfaz gráfica):**
-
-1. Intenta abrir **GTV Remote.app** una vez y haz clic en **Aceptar** (o **Cancelar**) en el aviso.
-2. Abre **Ajustes del Sistema** → **Privacidad y seguridad**.
-3. Desplázate hacia abajo hasta la sección **Seguridad** y haz clic en **Abrir de todas formas** junto al mensaje que indica que se bloqueó el uso de `«GTV Remote.app»`.
-4. Confirma haciendo clic en **Abrir de todas formas** (o **Abrir**) e introduce la contraseña de tu Mac o usa Touch ID.
-
-**Método B — desde la Terminal:**
-
-```bash
-xattr -cr "/Applications/GTV Remote.app"
-```
+> **Firmado y notarizado:** Las versiones oficiales (`v1.0.5+`) están firmadas con un certificado Apple Developer ID y notarizadas por Apple, por lo que se abren directamente sin advertencias de Gatekeeper.
 
 ---
 
@@ -186,9 +171,9 @@ make uninstall
 ## Preguntas frecuentes y solución de problemas
 
 <details>
-<summary><strong>macOS indica que la aplicación es de un desarrollador no identificado</strong></summary>
+<summary><strong>¿GTV Remote está firmado y notarizado por Apple?</strong></summary>
 
-Las versiones publicadas tienen firma ad-hoc. Ve a **Ajustes del Sistema → Privacidad y seguridad** y pulsa **Abrir de todas formas**, o ejecuta `xattr -cr "/Applications/GTV Remote.app"` en Terminal.
+Sí. Las versiones oficiales a partir de `v1.0.5` están firmadas con Apple Developer ID y notarizadas por Apple, por lo que se abren sin advertencias de Gatekeeper. Si usas una versión anterior (`v1.0.4` o previa), actualiza a la última versión.
 
 </details>
 
