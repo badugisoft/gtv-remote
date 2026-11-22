@@ -17,7 +17,7 @@ define sign_bundle
 	fi
 endef
 
-.PHONY: all build build-debug run dev install uninstall package clean
+.PHONY: all build build-debug run dev install uninstall package dmg clean
 
 ## 기본 타겟: release 빌드 후 설치
 all: install
@@ -87,11 +87,36 @@ package: build
 	@cp "$(RESOURCES)/Info.plist" "$(DIST_BUNDLE)/Contents/Info.plist"
 	$(call sign_bundle,$(DIST_BUNDLE))
 	@xattr -cr "$(DIST_BUNDLE)" 2>/dev/null || true
-	@echo "💿 DMG 생성 중..."
-	@hdiutil create -volname "$(APP_NAME)" -srcfolder "$(DIST_BUNDLE)" -ov -format UDZO "$(DIST_DIR)/$(APP_NAME).dmg"
+	@$(MAKE) dmg
 	@echo "🗜️  ZIP 생성 중..."
 	@ditto -c -k --sequesterRsrc --keepParent "$(DIST_BUNDLE)" "$(DIST_DIR)/$(APP_NAME).zip"
 	@echo "✅ 패키징 완료: $(DIST_DIR)/"
+
+## dist/GTV Remote.app 에서 DMG 생성 (create-dmg 우선, 미설치 시 hdiutil 폴백)
+dmg:
+	@echo "💿 DMG 생성 중..."
+	@rm -rf "$(DIST_DIR)/dmg-stage" "$(DIST_DIR)/$(APP_NAME).dmg"
+	@mkdir -p "$(DIST_DIR)/dmg-stage"
+	@cp -R "$(DIST_BUNDLE)" "$(DIST_DIR)/dmg-stage/"
+	@if command -v create-dmg >/dev/null 2>&1; then \
+		create-dmg \
+			--volname "$(APP_NAME)" \
+			--volicon "$(RESOURCES)/AppIcon.icns" \
+			--background "assets/dmg-background.tiff" \
+			--window-pos 200 120 \
+			--window-size 660 400 \
+			--icon-size 100 \
+			--icon "$(APP_NAME).app" 175 205 \
+			--hide-extension "$(APP_NAME).app" \
+			--app-drop-link 485 205 \
+			--no-internet-enable \
+			"$(DIST_DIR)/$(APP_NAME).dmg" \
+			"$(DIST_DIR)/dmg-stage"; \
+	else \
+		ln -s /Applications "$(DIST_DIR)/dmg-stage/Applications"; \
+		hdiutil create -volname "$(APP_NAME)" -srcfolder "$(DIST_DIR)/dmg-stage" -ov -format UDZO "$(DIST_DIR)/$(APP_NAME).dmg"; \
+	fi
+	@rm -rf "$(DIST_DIR)/dmg-stage"
 
 # ── 제거 / 청소 ──────────────────────────────────────────────────────────────
 

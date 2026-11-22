@@ -17,6 +17,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install create-dmg
+        run: brew install create-dmg
+
       - name: Import Code Signing Certificate
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -62,7 +65,7 @@ jobs:
           # Recreate ZIP and DMG with the stapled .app, then notarize & staple DMG
           rm -f "dist/GTV Remote.zip" "dist/GTV Remote.dmg"
           ditto -c -k --sequesterRsrc --keepParent "dist/GTV Remote.app" "dist/GTV Remote.zip"
-          hdiutil create -volname "GTV Remote" -srcfolder "dist/GTV Remote.app" -ov -format UDZO "dist/GTV Remote.dmg"
+          make dmg
           xcrun notarytool submit "dist/GTV Remote.dmg" \
             --apple-id "$APPLE_ID" \
             --team-id "$APPLE_TEAM_ID" \
