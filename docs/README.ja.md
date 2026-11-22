@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@
 
 ## インストール方法
 
-### 方法 1: リリース版をダウンロード（推奨）
+### 方法 1: リリース版をダウンロード（Apple Silicon、推奨）
 
 1. [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest) から最新の `GTV-Remote-v*.dmg` または `GTV-Remote-v*.zip` をダウンロードします。
 2. `.dmg` を開く（または `.zip` を展開する）と表示される **GTV Remote.app** を `/Applications`（アプリケーション）フォルダへドラッグします。
 3. `/Applications` から **GTV Remote** を起動します。
 
-> **署名・公証済み:** 公式リリース（`v1.0.5+`）は Apple Developer ID 証明書で署名され、Apple の公証（Notarization）を受けているため、macOS Gatekeeper の警告なしでそのまま起動できます。
+> **署名・公証済み:** 公式リリース（`v1.0.5+`）は Apple Developer ID 証明書で署名され、Apple の公証（Notarization）を受けているため、macOS Gatekeeper の警告なしでそのまま起動できます。配布リリースは **Apple Silicon** Mac 向けのため、Intel Mac をお使いの場合は **方法 2（ソースコードからビルド）** をご利用ください。
 
 ---
 
@@ -203,7 +203,7 @@ make uninstall
 <details>
 <summary><strong>対応している TV と macOS バージョンは？</strong></summary>
 
-Google TV / Android TV Remote v2 対応デバイス（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield など）および **macOS 14.0 (Sonoma)** 以降の Apple Silicon / Intel Mac に対応しています。
+Google TV / Android TV Remote v2 対応デバイス（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield など）および **macOS 14.0 (Sonoma)** 以降の Mac に対応しています（配布リリースは Apple Silicon 向け、Intel Mac はソースコードからのビルドで対応）。
 
 </details>
 

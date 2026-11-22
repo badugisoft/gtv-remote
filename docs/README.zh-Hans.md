@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@
 
 ## 安装指南
 
-### 方式一：下载预编译发行版（推荐）
+### 方式一：下载预编译发行版（Apple Silicon，推荐）
 
 1. 前往 [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest) 下载最新的 `GTV-Remote-v*.dmg` 或 `GTV-Remote-v*.zip`。
 2. 打开 `.dmg` 文件（或解压 `.zip` 压缩包），将 **GTV Remote.app** 拖入 `/Applications`（应用程序）文件夹。
 3. 从 `/Applications` 中启动 **GTV Remote**。
 
-> **已签名并公证：** 官方发布版本（`v1.0.5+`）均使用 Apple Developer ID 证书签名并通过 Apple 公证（Notarization），可直接打开，不会触发 macOS Gatekeeper 安全警告。
+> **已签名并公证：** 官方发布版本（`v1.0.5+`）均使用 Apple Developer ID 证书签名并通过 Apple 公证（Notarization），可直接打开，不会触发 macOS Gatekeeper 安全警告。预编译发行版仅面向 **Apple Silicon** Mac，Intel Mac 用户请使用 **方式二（从源码构建）**。
 
 ---
 
@@ -203,7 +203,7 @@ make uninstall
 <details>
 <summary><strong>支持哪些电视与 macOS 版本？</strong></summary>
 
-支持所有兼容 Google TV / Android TV Remote v2 的设备（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield 等）以及 **macOS 14.0 (Sonoma)** 及更高版本的 Apple Silicon / Intel Mac。
+支持所有兼容 Google TV / Android TV Remote v2 的设备（Chromecast with Google TV、Sony、TCL、Hisense、Nvidia Shield 等）以及 **macOS 14.0 (Sonoma)** 及更高版本的 Mac（预编译发行版仅支持 Apple Silicon，Intel Mac 需从源码构建）。
 
 </details>
 

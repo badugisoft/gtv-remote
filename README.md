@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@ When the remote window is active, the following physical hotkeys are available:
 
 ## Installation
 
-### Option 1: Download Pre-built Release (Recommended)
+### Option 1: Download Pre-built Release (Apple Silicon, Recommended)
 
 1. Download the latest `GTV-Remote-v*.dmg` or `GTV-Remote-v*.zip` from [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest).
 2. Open the `.dmg` (or extract the `.zip`) and drag **GTV Remote.app** into your `/Applications` folder.
 3. Launch **GTV Remote** from `/Applications`.
 
-> **Signed & Notarized:** Official releases (`v1.0.5+`) are signed with an Apple Developer ID certificate and notarized by Apple, so they open directly without macOS Gatekeeper warnings.
+> **Signed & Notarized:** Official releases (`v1.0.5+`) are signed with an Apple Developer ID certificate and notarized by Apple, so they open directly without macOS Gatekeeper warnings. Pre-built releases target **Apple Silicon** Macs; Intel Mac users should use **Option 2 (Build from Source)**.
 
 ---
 
@@ -203,7 +203,7 @@ No. All communication happens directly between your Mac and TV on your local net
 <details>
 <summary><strong>Which TVs and macOS versions are supported?</strong></summary>
 
-Any TV or streaming device supporting Google TV / Android TV Remote v2 (Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) and Macs running **macOS 14.0 (Sonoma)** or later (Apple Silicon & Intel).
+Any TV or streaming device supporting Google TV / Android TV Remote v2 (Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) and Macs running **macOS 14.0 (Sonoma)** or later (prebuilt releases for Apple Silicon; Intel Macs via building from source).
 
 </details>
 

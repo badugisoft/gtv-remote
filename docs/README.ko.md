@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@
 
 ## 설치 방법
 
-### 방법 1: 빌드된 릴리즈 다운로드 (권장)
+### 방법 1: 빌드된 릴리즈 다운로드 (Apple Silicon, 권장)
 
 1. [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest)에서 최신 `GTV-Remote-v*.dmg` 또는 `GTV-Remote-v*.zip` 파일을 다운로드합니다.
 2. `.dmg` 파일을 열거나 `.zip` 압축을 푼 뒤 **GTV Remote.app**을 `/Applications`(응용 프로그램) 폴더로 드래그하여 복사합니다.
 3. `/Applications` 폴더에서 **GTV Remote**를 실행합니다.
 
-> **서명 및 공증 완료:** 공식 릴리즈(`v1.0.5+`)는 Apple Developer ID 인증서로 서명 및 Apple 공증(Notarization)을 거쳐 배포되므로 macOS Gatekeeper 경고 없이 바로 실행됩니다.
+> **서명 및 공증 완료:** 공식 릴리즈(`v1.0.5+`)는 Apple Developer ID 인증서로 서명 및 Apple 공증(Notarization)을 거쳐 배포되므로 macOS Gatekeeper 경고 없이 바로 실행됩니다. 배포 릴리즈는 **Apple Silicon** Mac 전용이며, Intel Mac 사용자는 **방법 2(소스 코드에서 직접 빌드)**를 이용해 주세요.
 
 ---
 
@@ -203,7 +203,7 @@ make uninstall
 <details>
 <summary><strong>지원되는 TV 기기와 macOS 버전은 무엇인가요?</strong></summary>
 
-Google TV / Android TV Remote v2를 지원하는 모든 TV·스트리밍 기기(Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield 등)와 **macOS 14.0 (Sonoma)** 이상이 설치된 Apple Silicon 및 Intel Mac을 지원합니다.
+Google TV / Android TV Remote v2를 지원하는 모든 TV·스트리밍 기기(Chromecast with Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield 등)와 **macOS 14.0 (Sonoma)** 이상이 설치된 Mac을 지원합니다(배포 릴리즈는 Apple Silicon 전용, Intel Mac은 소스에서 직접 빌드 시 지원).
 
 </details>
 

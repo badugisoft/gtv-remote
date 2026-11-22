@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@ Wenn das Fernbedienungsfenster aktiv ist, stehen folgende Kurzbefehle zur Verfü
 
 ## Installation
 
-### Option 1: Vorgefertigtes Release herunterladen (Empfohlen)
+### Option 1: Vorgefertigtes Release herunterladen (Apple Silicon, Empfohlen)
 
 1. Laden Sie die neueste `GTV-Remote-v*.dmg` oder `GTV-Remote-v*.zip` unter [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest) herunter.
 2. Öffnen Sie die `.dmg`-Datei (oder entpacken Sie die `.zip`-Datei) und ziehen Sie **GTV Remote.app** in Ihren Ordner `/Applications` (**Programme**).
 3. Starten Sie **GTV Remote** aus `/Applications`.
 
-> **Signiert & Notarisiert:** Offizielle Releases (`v1.0.5+`) sind mit einem Apple Developer ID-Zertifikat signiert und von Apple notarisiert, sodass sie ohne Gatekeeper-Warnung gestartet werden können.
+> **Signiert & Notarisiert:** Offizielle Releases (`v1.0.5+`) sind mit einem Apple Developer ID-Zertifikat signiert und von Apple notarisiert, sodass sie ohne Gatekeeper-Warnung gestartet werden können. Vorgefertigte Releases richten sich an **Apple Silicon**-Macs; Intel-Mac-Nutzer sollten **Option 2 (Aus dem Quellcode erstellen)** verwenden.
 
 ---
 
@@ -203,7 +203,7 @@ Nein. Die gesamte Kommunikation findet ausschließlich im lokalen Netzwerk per g
 <details>
 <summary><strong>Welche TV-Geräte und macOS-Versionen werden unterstützt?</strong></summary>
 
-Alle Geräte mit Google TV / Android TV Remote v2 (Chromecast mit Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield usw.) sowie Macs mit **macOS 14.0 (Sonoma)** oder neuer (Apple Silicon & Intel).
+Alle Geräte mit Google TV / Android TV Remote v2 (Chromecast mit Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield usw.) sowie Macs mit **macOS 14.0 (Sonoma)** oder neuer (vorgefertigte Releases für Apple Silicon; Intel-Macs über Erstellung aus dem Quellcode).
 
 </details>
 

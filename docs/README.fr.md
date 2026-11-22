@@ -15,7 +15,7 @@
   <a href="https://badugisoft.github.io/gtv-remote/"><img src="https://img.shields.io/badge/Website-GitHub%20Pages-2563eb?style=flat-square" alt="Project Website" /></a>
   <img src="https://img.shields.io/badge/macOS-14.0%2B-black?style=flat-square&logo=apple" alt="macOS 14+" />
   <img src="https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat-square&logo=swift" alt="Swift 6.0+" />
-  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon%20%7C%20Intel-blue?style=flat-square" alt="Apple Silicon & Intel" />
+  <img src="https://img.shields.io/badge/Architecture-Apple%20Silicon-blue?style=flat-square" alt="Apple Silicon" />
   <img src="https://img.shields.io/badge/100%25-Built%20with%20Antigravity-blue?style=flat-square" alt="100% Built with Antigravity" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License" />
 </p>
@@ -128,13 +128,13 @@ Lorsque la fenêtre de la télécommande est active, les raccourcis suivants son
 
 ## Installation
 
-### Option 1 : Télécharger une version précompilée (Recommandé)
+### Option 1 : Télécharger une version précompilée (Apple Silicon, Recommandé)
 
 1. Téléchargez la dernière archive `GTV-Remote-v*.dmg` ou `GTV-Remote-v*.zip` depuis [GitHub Releases](https://github.com/badugisoft/gtv-remote/releases/latest).
 2. Ouvrez le `.dmg` (ou décompressez le `.zip`) et glissez **GTV Remote.app** dans votre dossier `/Applications`.
 3. Lancez **GTV Remote** depuis `/Applications`.
 
-> **Signé et notarié :** Les versions officielles (`v1.0.5+`) sont signées avec un certificat Apple Developer ID et notariées par Apple, ce qui permet de les ouvrir directement sans avertissement Gatekeeper.
+> **Signé et notarié :** Les versions officielles (`v1.0.5+`) sont signées avec un certificat Apple Developer ID et notariées par Apple, ce qui permet de les ouvrir directement sans avertissement Gatekeeper. Les versions précompilées ciblent les Mac **Apple Silicon** ; les utilisateurs de Mac Intel doivent utiliser l'**Option 2 (Compiler depuis les sources)**.
 
 ---
 
@@ -203,7 +203,7 @@ Non. Toute communication reste strictement sur votre réseau local via TLS mutue
 <details>
 <summary><strong>Quels téléviseurs et versions de macOS sont pris en charge ?</strong></summary>
 
-Tout appareil compatible Google TV / Android TV Remote v2 (Chromecast avec Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) et Mac sous **macOS 14.0 (Sonoma)** ou ultérieur (Apple Silicon & Intel).
+Tout appareil compatible Google TV / Android TV Remote v2 (Chromecast avec Google TV, Sony Bravia, TCL, Hisense, Nvidia Shield, etc.) et Mac sous **macOS 14.0 (Sonoma)** ou ultérieur (versions précompilées pour Apple Silicon ; Mac Intel via compilation depuis les sources).
 
 </details>
 
