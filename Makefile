@@ -5,6 +5,17 @@ APP_BUNDLE  = /Applications/$(APP_NAME).app
 DIST_DIR    = dist
 DIST_BUNDLE = $(DIST_DIR)/$(APP_NAME).app
 RESOURCES   = Resources
+SIGN_IDENTITY ?= $(shell security find-identity -v -p codesigning 2>/dev/null | grep -m1 "Developer ID Application" | sed -E 's/.*"([^"]+)".*/\1/')
+
+define sign_bundle
+	@if [ -n "$(SIGN_IDENTITY)" ] && [ "$(SIGN_IDENTITY)" != "-" ]; then \
+		echo "🔐 코드사인 ($(SIGN_IDENTITY))..."; \
+		codesign --force --deep --options runtime --timestamp --sign "$(SIGN_IDENTITY)" "$(1)"; \
+	else \
+		echo "🔐 코드사인 (ad-hoc)..."; \
+		codesign --force --deep --sign - "$(1)" 2>/dev/null || true; \
+	fi
+endef
 
 .PHONY: all build build-debug run dev install uninstall package clean
 
@@ -55,8 +66,7 @@ install: build
 	@echo "📄 Info.plist 복사..."
 	@cp "$(RESOURCES)/Info.plist" "$(APP_BUNDLE)/Contents/Info.plist"
 
-	@echo "🔐 코드사인 (ad-hoc)..."
-	@codesign --force --deep --sign - "$(APP_BUNDLE)" 2>/dev/null || true
+	$(call sign_bundle,$(APP_BUNDLE))
 	@xattr -cr "$(APP_BUNDLE)" 2>/dev/null || true
 	@touch "$(APP_BUNDLE)"
 	@/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f -r "$(APP_BUNDLE)" 2>/dev/null || true
@@ -75,8 +85,7 @@ package: build
 	@chmod +x "$(DIST_BUNDLE)/Contents/MacOS/$(APP_NAME)"
 	@cp "$(RESOURCES)/AppIcon.icns" "$(DIST_BUNDLE)/Contents/Resources/AppIcon.icns"
 	@cp "$(RESOURCES)/Info.plist" "$(DIST_BUNDLE)/Contents/Info.plist"
-	@echo "🔐 코드사인 (ad-hoc)..."
-	@codesign --force --deep --sign - "$(DIST_BUNDLE)" 2>/dev/null || true
+	$(call sign_bundle,$(DIST_BUNDLE))
 	@xattr -cr "$(DIST_BUNDLE)" 2>/dev/null || true
 	@echo "💿 DMG 생성 중..."
 	@hdiutil create -volname "$(APP_NAME)" -srcfolder "$(DIST_BUNDLE)" -ov -format UDZO "$(DIST_DIR)/$(APP_NAME).dmg"

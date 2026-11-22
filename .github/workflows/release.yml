@@ -17,15 +17,69 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Import Code Signing Certificate
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+          CERT_PATH=$RUNNER_TEMP/certificate.p12
+
+          echo -n "$MACOS_CERTIFICATE" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          security import "$CERT_PATH" -P "$MACOS_CERTIFICATE_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+
+          rm -f "$CERT_PATH"
+
       - name: Build and Package App
+        env:
+          SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
         run: |
           make package
+
+      - name: Notarize and Staple App & DMG
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent "dist/GTV Remote.app" "$RUNNER_TEMP/app-notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/app-notarize.zip" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_PASSWORD" \
+            --wait
+          xcrun stapler staple "dist/GTV Remote.app"
+          rm -f "$RUNNER_TEMP/app-notarize.zip"
+
+          # Recreate ZIP and DMG with the stapled .app, then notarize & staple DMG
+          rm -f "dist/GTV Remote.zip" "dist/GTV Remote.dmg"
+          ditto -c -k --sequesterRsrc --keepParent "dist/GTV Remote.app" "dist/GTV Remote.zip"
+          hdiutil create -volname "GTV Remote" -srcfolder "dist/GTV Remote.app" -ov -format UDZO "dist/GTV Remote.dmg"
+          xcrun notarytool submit "dist/GTV Remote.dmg" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_PASSWORD" \
+            --wait
+          xcrun stapler staple "dist/GTV Remote.dmg"
 
       - name: Prepare Release Artifacts
         run: |
           TAG="${{ github.ref_name }}"
           cp "dist/GTV Remote.dmg" "dist/GTV-Remote-${TAG}.dmg"
           cp "dist/GTV Remote.zip" "dist/GTV-Remote-${TAG}.zip"
+
+      - name: Clean Up Keychain
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
