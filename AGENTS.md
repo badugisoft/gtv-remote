@@ -1,127 +1,25 @@
 # Agent Guidelines for GTV Remote
 
-This document serves as the guide for AI coding assistants and developers contributing to **GTV Remote**.
-
----
+Guide for AI coding assistants and contributors working on **GTV Remote**.
 
 ## 1. Core Operating Principles
 
-When assisting in this repository, always follow these fundamental rules:
-
 1. **State Actions First**: Briefly state what action or tool call you are about to execute before doing it.
-2. **Explicit Approval for Repository Actions**: NEVER commit, push, create tags, or publish releases to the Git repository without prior explicit user confirmation.
-3. **Clarify Critical Decisions**: Ask the user before making substantial architectural changes or removing existing functionality.
-4. **Concise & Direct Responses**: Answer only what was asked without unnecessary preamble, fluff, or excessive hypothetical examples.
-5. **No Flattery**: Keep responses objective, technical, and professional without patronizing praise.
-6. **Versioning Policy**:
-   - **Major (X.0.0)**: Use only for major architectural redesigns or breaking changes.
-   - **Minor (0.X.0)**: Use when adding new features or making substantial feature modifications.
-   - **Patch / Revision (0.0.X)**: Use for bug fixes, corrections, and minor maintenance.
-7. **Install & Run Upon Completion**: Whenever local modifications and builds are completed, always install and launch the app (`make install`) so the user can immediately test the changes.
+2. **Explicit Approval for Repo Actions**: NEVER commit, push, create tags, or publish releases without prior explicit user confirmation.
+3. **Clarify Critical Decisions**: Ask before making substantial architectural changes, deleting files, or removing functionality.
+4. **Concise & Direct**: Answer only what was asked; no preamble, fluff, or flattery.
+5. **Versioning Policy**:
+   - `X.0.0` (Major): Major architectural redesigns or breaking changes.
+   - `0.X.0` (Minor): New features or substantial feature modifications.
+   - `0.0.X` (Patch): Bug fixes, corrections, and minor maintenance.
+6. **Verify & Launch**: After local code edits, run `make install` to build, install, and launch the app for immediate testing.
 
----
+## 2. Project & Documentation Map
 
-## 2. Project Overview & Architecture
+**GTV Remote** is a native macOS (14.0+, Swift 5.10+) SwiftUI/AppKit app controlling Google TV / Android TV over local mTLS (Google TV Remote Protocol v2).
 
-**GTV Remote** is a native macOS application for controlling Google TV and Android TV devices over the local network via Google TV Remote Protocol v2.
-
-- **Language / Platform**: Swift 5.10+, macOS 14.0+ (Sonoma)
-- **UI Framework**: SwiftUI + AppKit integration (menu bar status item, floating HUD window)
-- **Networking**: Apple Network.framework, `dnssd` / `NetService` (Bonjour mDNS discovery for `_androidtvremote2._tcp.local.` with dynamic IP tracking and safe reconnection bounds), SwiftNIO / NIOSSL (TLS socket bridge on ports 6466 & 6467)
-- **Protocols**: Protocol Buffers via `SwiftProtobufPlugin` (`pairing.proto` and `remote.proto`). Pairing secret computation requires stripping leading null bytes from RSA modulus and exponent per Polo specification.
-- **Security**: Self-signed RSA-2048 client certificate generation using Security framework
-
----
-
-## 3. Directory Layout
-
-```
-gtv-remote/
-├── .github/
-│   ├── ISSUE_TEMPLATE/       # Bug report, feature request & config templates
-│   ├── PULL_REQUEST_TEMPLATE.md # PR verification checklist
-│   └── workflows/            # CI/CD workflows (release.yml, pages.yml)
-├── CONTRIBUTING.md           # Contribution & build guide
-├── Makefile                  # Build, install, packaging automation
-├── Package.swift             # Swift Package Manager manifest
-├── SECURITY.md               # Privacy architecture & vulnerability reporting
-├── protos/                   # Original Protobuf specifications
-├── Resources/                # AppIcon.icns, Info.plist
-├── assets/                   # README images and documentation media
-├── docs/                     # Localized README guides (ko, zh-Hans, ja, de, fr, es)
-├── site/                     # GitHub Pages promotional website (index.html, styles.css, i18n.js)
-└── Sources/GTVRemote/
-    ├── App/                  # App delegate, window controller, status item, key monitor
-    │   ├── AppDelegate.swift
-    │   ├── GTVRemoteApp.swift
-    │   ├── KeyboardMonitor.swift
-    │   ├── MenuBarController.swift
-    │   └── WindowController.swift
-    ├── Core/
-    │   ├── Network/          # Discovery, Bonjour resolver, TLS sockets, TV connection
-    │   │   ├── BonjourResolver.swift
-    │   │   ├── DeviceDiscoveryService.swift
-    │   │   ├── TLSSocketBridge.swift
-    │   │   └── TVConnectionManager.swift
-    │   ├── Proto/            # Generated SwiftProtobuf bindings
-    │   │   ├── pairing.pb.swift
-    │   │   └── remote.pb.swift
-    │   └── Security/         # RSA-2048 certificate generation
-    │       └── CertificateManager.swift
-    ├── Localization/         # Modular 7-language localization engine
-    │   ├── Languages/        # Per-language string definitions
-    │   │   ├── Chinese.swift
-    │   │   ├── English.swift
-    │   │   ├── French.swift
-    │   │   ├── German.swift
-    │   │   ├── Japanese.swift
-    │   │   ├── Korean.swift
-    │   │   └── Spanish.swift
-    │   ├── L10n.swift        # MainActor-isolated proxy for SwiftUI views
-    │   ├── LocalizableStrings.swift  # Protocol enforcing complete key implementation
-    │   └── LocalizationManager.swift # Observable language manager
-    ├── Models/               # Data structures, RemoteKey codes, App Shortcuts
-    │   ├── AppShortcut.swift
-    │   ├── Models.swift
-    │   └── RemoteKey.swift
-    ├── ViewModels/           # Observable remote business logic
-    │   └── RemoteViewModel.swift
-    └── Views/                # SwiftUI interfaces
-        ├── Components/       # DPadView, SmartInputBar, RemoteButtonStyles
-        ├── Sheets/           # PairingSheetView, ShortcutsView, AppShortcutsSettingsView
-        └── RemoteControlView.swift # Main remote interface
-```
-
----
-
-## 4. Build & Development Commands
-
-Always use `make` targets or SwiftPM commands from the project root:
-
-| Command | Description |
-|---|---|
-| `make build` | Builds release binary using SwiftPM (`swift build -c release`). |
-| `make build-debug` | Builds debug binary. |
-| `make run` / `make dev` | Builds debug binary and runs immediately in foreground with terminal stdout/stderr. |
-| `make install` | Builds release binary, creates `/Applications/GTV Remote.app`, ad-hoc signs, and launches. |
-| `make package` | Builds release binary and packages into `dist/GTV Remote.app`, `dist/GTV Remote.dmg`, and `dist/GTV Remote.zip`. |
-| `make clean` | Cleans SwiftPM artifacts and removes `dist/`. |
-
----
-
-## 5. Adding a New Language
-
-Localization uses a strict protocol-based architecture for compile-time safety. To add a new language:
-
-1. **Update Enum**: In `Sources/GTVRemote/Localization/LocalizationManager.swift`, add a case to `AppLanguage` with its ISO code, localized name, and English name.
-2. **Implement Strings**: Create `Sources/GTVRemote/Localization/Languages/<LanguageName>.swift` conforming to `LocalizableStrings`. Implement every property required by the protocol.
-3. **Register Mapping**: In `LocalizationManager.strings`, add a branch to return the new language struct.
-
----
-
-## 6. App Shortcuts & Deep Linking
-
-Quick launch shortcuts work by sending deep link URLs to the Google TV Remote v2 protocol endpoint.
-- Deep links must start with `https://` (e.g., `https://www.youtube.com/`, `https://tv.apple.com`).
-- Default catalog apps are defined in `Sources/GTVRemote/Models/AppShortcut.swift` in `defaultCatalog`.
-- Custom user apps are persisted via `UserDefaults` with name and deep link URL.
+For details, refer to the dedicated docs instead of duplicating them here:
+- **Features, Shortcuts & FAQ**: [README.md](README.md)
+- **Build Commands, Localization & PR Workflow**: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Tech Stack, Directory Layout & Protocol/Deep-Link Notes**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- **Privacy & Local-Only Data Flow**: [SECURITY.md](SECURITY.md)
